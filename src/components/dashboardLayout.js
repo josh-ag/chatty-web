@@ -28,8 +28,8 @@ import {
 import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { blue, grey, red } from "@mui/material/colors";
 import chatty_logo from "../assets/rounded-chat.png";
-const drawerWidth = 240;
 
+const drawerWidth = 240;
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -88,7 +88,6 @@ export const DashboardLayout = (props) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("loginId");
-
     setTimeout(() => window.location.reload(), 500);
   };
 
@@ -108,7 +107,7 @@ export const DashboardLayout = (props) => {
     },
     {
       title: "Chat",
-      path: `/chat`,
+      path: `/`,
       icon: <VideoCallOutlined fontSize="medium" sx={{ color: "inherit" }} />,
     },
     {
@@ -142,105 +141,89 @@ export const DashboardLayout = (props) => {
   }
 
   return (
-    <>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <CssBaseline />
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader>
-            <List>
-              <ListItem
-                component={Link}
-                to="/"
-                sx={{ justifyContent: "center" }}
-              >
-                <Avatar
-                  src={chatty_logo}
-                  sx={{ width: 50, height: 50, mr: 1 }}
-                />
-                <Typography
-                  variant="h5"
-                  sx={{ fontSize: 26, color: grey[800] }}
-                >
-                  Chatty
-                </Typography>
-              </ListItem>
-              {open ? (
-                <ListItem>
-                  <Button
-                    startIcon={<ArrowBackIosNewOutlined />}
-                    onClick={() => navigate(-1)}
-                    disableRipple
-                  >
-                    back
-                  </Button>
-                  <Button
-                    color="warning"
-                    onClick={handleDrawerClose}
-                    startIcon={<CancelOutlined />}
-                  >
-                    close
-                  </Button>
-                </ListItem>
-              ) : (
-                <ListItem onClick={handleDrawerOpen}>
-                  <Tooltip title="Expand">
-                    <ListItemIcon>
-                      <ArrowForwardIosOutlined color="primary" />
-                    </ListItemIcon>
-                  </Tooltip>
-                  <ListItemText color="primary">Open</ListItemText>
-                </ListItem>
-              )}
-            </List>
-          </DrawerHeader>
-
+    <Box sx={{ display: "flex", minWidth: "100%" }}>
+      <CssBaseline />
+      <Drawer variant="permanent" open={open} elevation={0}>
+        <DrawerHeader>
           <List>
-            {menuItems.map((item) => (
-              <ListItem
-                key={item.title}
-                sx={{
-                  ":hover": { bgcolor: blue[50] },
-                  bgcolor:
-                    location.pathname === item.path ? blue[50] : grey["A50"],
-                  textDecoration: "none",
-                  color:
-                    location.pathname === item.path ? blue[700] : grey[700],
-                }}
-                component={Link}
-                to={item.path}
-              >
-                <ListItemIcon
-                  sx={{
-                    color:
-                      location.pathname === item.path ? blue[700] : grey[500],
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItem>
-            ))}
-          </List>
-          <List sx={{ position: "absolute", bottom: 0 }}>
-            <ListItem sx={{ color: red[700] }} onClick={handleLogout}>
-              <ListItemIcon>
-                <LogoutRounded color="warning" />
-              </ListItemIcon>
-              <ListItemText primary="Logout" color="warning" />
+            <ListItem component={Link} to="/" sx={{ justifyContent: "center" }}>
+              <Avatar src={chatty_logo} sx={{ width: 50, height: 50, mr: 1 }} />
+              <Typography variant="h5" sx={{ fontSize: 26, color: grey[800] }}>
+                Chatty
+              </Typography>
             </ListItem>
+            {open ? (
+              <ListItem>
+                <Button
+                  startIcon={<ArrowBackIosNewOutlined />}
+                  onClick={() => navigate(-1)}
+                  disableRipple
+                >
+                  back
+                </Button>
+                <Button
+                  color="warning"
+                  onClick={handleDrawerClose}
+                  startIcon={<CancelOutlined />}
+                >
+                  close
+                </Button>
+              </ListItem>
+            ) : (
+              <ListItem onClick={handleDrawerOpen}>
+                <Tooltip title="Expand">
+                  <ListItemIcon>
+                    <ArrowForwardIosOutlined color="primary" />
+                  </ListItemIcon>
+                </Tooltip>
+                <ListItemText color="primary">Open</ListItemText>
+              </ListItem>
+            )}
           </List>
-        </Drawer>
-        <Box
-          sx={{
-            width: "100%",
-            minHeight: "100vh",
-            height: "100%",
-            bgcolor: grey[200],
-          }}
-        >
-          {props.children}
-        </Box>
+        </DrawerHeader>
+
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              key={item.title}
+              sx={{
+                ":hover": { bgcolor: blue[50] },
+                bgcolor:
+                  location.pathname === item.path ? blue[50] : grey["A50"],
+                textDecoration: "none",
+                color: location.pathname === item.path ? blue[700] : grey[700],
+              }}
+              component={Link}
+              to={item.path}
+            >
+              <ListItemIcon
+                sx={{
+                  color:
+                    location.pathname === item.path ? blue[700] : grey[500],
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.title} />
+            </ListItem>
+          ))}
+        </List>
+        <List sx={{ position: "absolute", bottom: 0 }}>
+          <ListItem sx={{ color: red[700] }} onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutRounded color="warning" />
+            </ListItemIcon>
+            <ListItemText primary="Logout" color="warning" />
+          </ListItem>
+        </List>
+      </Drawer>
+      <Box
+        sx={{
+          width: "100%",
+        }}
+      >
+        {props.children}
       </Box>
-    </>
+    </Box>
   );
 };

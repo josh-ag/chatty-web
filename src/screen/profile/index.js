@@ -92,7 +92,11 @@ const ProfileScreen = () => {
   }
 
   return (
-    <Grid container sx={{ my: 1, mx: 1 }}>
+    <Grid
+      container
+      sx={{ width: "100%", alignItems: "stretch", p: 1 }}
+      spacing={1}
+    >
       <Grid item xs={12} sm={11} md={6}>
         <Card
           elevation={0}

@@ -32,7 +32,7 @@ import logoSignup from "../../assets/logo_signup.jpg";
 
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
-import { useSignupMutation } from "../../features/services/queries";
+import { useRegisterMutation } from "../../features/services/queries";
 
 const SignupScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -52,7 +52,7 @@ const SignupScreen = () => {
   //Hooks
   const theme = useTheme();
   const navigate = useNavigate();
-  const [signup] = useSignupMutation();
+  const [register] = useRegisterMutation();
 
   const handleClickShowPassword = () => {
     setIsVisible(!isVisible);
@@ -107,16 +107,15 @@ const SignupScreen = () => {
       email,
       password,
     };
+    console.log(body);
 
     try {
-      const { data, error } = await signup(body);
-
-      console.log("Data: ", data);
-      console.log("Error: ", error);
+      const { data, error } = await register(body);
 
       if (error) {
         setOpen(true);
         setLoading(false);
+        console.log("Registration Error: ", error);
         return setMessage({
           ...message,
           type: "error",

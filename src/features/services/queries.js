@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api",
+    baseUrl: "/api/user",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
 
@@ -18,38 +18,43 @@ export const api = createApi({
   endpoints: (builder) => ({
     signin: builder.mutation({
       query: (loginInfo) => ({
-        url: "/user/login",
+        url: "/login",
         body: loginInfo,
         method: "post",
       }),
     }),
-    signup: builder.mutation({
-      query: (body) => ({
-        url: "/user/register",
-        body,
+
+    register: builder.mutation({
+      query: (registerInfo) => ({
+        url: "/register",
+        body: registerInfo,
         method: "post",
       }),
     }),
 
     getProfile: builder.query({
       query: () => ({
-        url: `/user/profile`,
+        url: `/profile`,
         method: "get",
       }),
     }),
 
     updateProfile: builder.mutation({
-      query: (updateData) => ({
-        url: `/user/${updateData.id}`,
-        body: updateData.body,
+      query: (data) => ({ url: `/${data.id}`, body: data.body, method: "put" }),
+    }),
+
+    verifyAccount: builder.mutation({
+      query: (verifyData) => ({
+        url: "/account/verify",
+        body: verifyData,
         method: "put",
       }),
     }),
 
     resetPassword: builder.mutation({
-      query: (body) => ({
-        url: `/user/password/reset`,
-        body: body,
+      query: (newPassword) => ({
+        url: `/password/reset`,
+        body: newPassword,
         method: "post",
       }),
     }),
@@ -58,8 +63,9 @@ export const api = createApi({
 
 export const {
   useSigninMutation,
-  useSignupMutation,
+  useRegisterMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
   useResetPasswordMutation,
+  useVerifyAccountMutation,
 } = api;

@@ -17,17 +17,17 @@ import SettingsScreen from "./screen/settings";
 import ProfileScreen from "./screen/profile";
 import EditScreen from "./screen/profileEdit";
 import { NotFound } from "./components/notFound";
-import { Provider } from "react-redux";
-import store from "./features/store";
 import DashboardScreen from "./screen/dashboard";
 import FavoritesScreen from "./screen/favorites";
 import NotificationScreen from "./screen/notifications";
+import { VerifyScreen } from "./screen/verify/verifyScreen";
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
 import { blue, green } from "@mui/material/colors";
+import { PasswordToken } from "./screen/passwordToken/passwordToken";
 
 function App() {
   const themeConfig = createTheme({
@@ -132,10 +132,9 @@ function App() {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/signup" element={<SignupScreen />} />
           <Route path="/forgot" element={<ForgotPasswordScreen />} />
-          <Route
-            path="/password/:token/new"
-            element={<ResetPasswordScreen />}
-          />
+          <Route path="/password/new" element={<ResetPasswordScreen />} />
+          <Route path="/account/verify" element={<VerifyScreen />} />
+          <Route path="/password/token" element={<PasswordToken />} />
           <Route path="/reset/error" element={<ErrorScreen />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -144,10 +143,4 @@ function App() {
   );
 }
 
-const StoreProvider = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
-
-export default StoreProvider;
+export default App;

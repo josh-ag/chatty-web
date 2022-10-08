@@ -15,21 +15,19 @@ import {
 } from "@mui/material";
 import { AlternateEmail } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
-import logoForgotPassword from "../../assets/forgot_passwd.svg";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
-import { useResetPasswordMutation } from "../../features/services/queries";
+import { useVerifyAccountMutation } from "../../features/services/queries";
 
-const ForgotPasswordScreen = () => {
+export const VerifyScreen = () => {
   const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
   const [message, setMessage] = useState({ type: null, message: null });
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [resetPassword] = useResetPasswordMutation();
+  const [verifyAccount] = useVerifyAccountMutation();
 
   const theme = useTheme();
-  const navigate = useNavigate();
 
   //handle close snackbar
   const handleClose = (event, reason) => {
@@ -44,17 +42,16 @@ const ForgotPasswordScreen = () => {
     e.preventDefault();
 
     //reset message state
-    setLoading(true);
     setOpen(false);
     setMessage((prev) => ({ ...prev, type: null, message: null }));
+    setLoading(true);
 
     const emailPattern =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!email) {
+    if (!email || !token) {
       setLoading(false);
-      setError(true);
-      return;
+      return setError(true);
     }
 
     if (email && !emailPattern.test(email)) {
@@ -68,7 +65,7 @@ const ForgotPasswordScreen = () => {
     }
 
     try {
-      const { data, error } = await resetPassword({ email });
+      const { data, error } = await verifyAccount({ email, token });
 
       if (error) {
         setOpen(true);
@@ -85,14 +82,12 @@ const ForgotPasswordScreen = () => {
       setMessage((prevState) => ({
         ...prevState,
         type: "success",
-        message: data?.message,
+        message: data.message,
       }));
 
       //reset state
       setEmail("");
-      if (data?.statusCode === 200 || data?.statusCode === 201) {
-        setTimeout(() => navigate("/password/new"), 2000);
-      }
+      setToken("");
     } catch (error) {
       //handle error
     }
@@ -135,10 +130,10 @@ const ForgotPasswordScreen = () => {
           <Alert
             variant="filled"
             onClose={handleClose}
-            severity={message.type}
+            severity={message?.type}
             // sx={{ fontSize: 12 }}
           >
-            {message.message}
+            {message?.message}
           </Alert>
         </Snackbar>
       )}
@@ -178,38 +173,18 @@ const ForgotPasswordScreen = () => {
                   justifyContent: "center",
                 }}
               >
-                <img
-                  src={logoForgotPassword}
-                  style={{
-                    width: 200,
-                    height: 200,
-                    display: "block",
-                    alignSelf: "center",
-                  }}
-                  alt="forgot password banner"
-                />
-
                 <Typography
                   variant="h5"
                   sx={{
                     fontWeight: "medium",
                     color: grey[800],
+                    mb: 4,
                   }}
                   noWrap
                 >
-                  Reset Password
+                  Email Verification
                 </Typography>
               </Box>
-              <Typography
-                variant="body2"
-                sx={{
-                  my: 2,
-                  color: grey[600],
-                }}
-              >
-                We will send to you email containing instructions to reset your
-                password
-              </Typography>
               <Box
                 component={"form"}
                 noValidate={true}
@@ -238,8 +213,20 @@ const ForgotPasswordScreen = () => {
                   fullWidth
                 />
 
+                <TextField
+                  onChange={(e) => setToken(e.target.value)}
+                  error={!token && error}
+                  type="text"
+                  label="Token"
+                  placeholder="verification token"
+                  defaultValue={token}
+                  sx={{ mb: 1 }}
+                  helperText="Token is required*"
+                  fullWidth
+                />
+
                 <Button type="submit" variant="contained" fullWidth>
-                  Send Instruction
+                  Submit
                 </Button>
               </Box>
             </Paper>
@@ -249,5 +236,3 @@ const ForgotPasswordScreen = () => {
     </>
   );
 };
-
-export default ForgotPasswordScreen;

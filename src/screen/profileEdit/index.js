@@ -74,6 +74,7 @@ const EditScreen = () => {
     }));
 
     if (
+      //do nothing if nothing changes
       firstname === data.user.firstname ||
       lastname === data.user.lastname ||
       username === data.user.username ||
@@ -107,7 +108,7 @@ const EditScreen = () => {
       return setMessage((prevState) => ({
         ...prevState,
         type: "error",
-        message: updateError.message,
+        message: updateError.message || error.error,
       }));
     }
 
@@ -155,7 +156,11 @@ const EditScreen = () => {
   }
 
   return (
-    <Grid container sx={{ my: 1, mx: 1 }}>
+    <Grid
+      container
+      sx={{ width: "100%", alignItems: "stretch", p: 1 }}
+      spacing={1}
+    >
       <Grid item xs={12} sm={12} md={6}>
         {message && (
           <Snackbar
@@ -211,7 +216,7 @@ const EditScreen = () => {
                     fontSize: 27,
                   }}
                 >
-                  {data.user?.username.substr(0, 1).toUpperCase()}
+                  {data?.user.username.substr(0, 1).toUpperCase()}
                 </Avatar>
               )}
               <Box sx={{ ml: 1, alignSelf: "flex-end" }}>
@@ -236,7 +241,7 @@ const EditScreen = () => {
               name="firstname"
               placeholder="Firstname"
               label="Firstname"
-              defaultValue={data.user?.firstname}
+              defaultValue={data?.user.firstname}
               onChange={handleChange}
               sx={{ mb: 2 }}
               InputProps={{ endAdornment: <PersonRounded color="primary" /> }}
@@ -246,7 +251,7 @@ const EditScreen = () => {
               name="lastname"
               placeholder="Lastname"
               label="Lastname"
-              defaultValue={data.user?.lastname}
+              defaultValue={data?.user.lastname}
               onChange={handleChange}
               sx={{ mb: 2 }}
               InputProps={{
@@ -259,7 +264,7 @@ const EditScreen = () => {
               name="username"
               placeholder="username"
               label="Username"
-              defaultValue={data.user?.username}
+              defaultValue={data?.user.username}
               onChange={handleChange}
               sx={{ mb: 2 }}
               InputProps={{ endAdornment: <VerifiedUser color="primary" /> }}
@@ -270,7 +275,7 @@ const EditScreen = () => {
               name="email"
               placeholder="Email"
               label="Email"
-              defaultValue={data.user?.email}
+              defaultValue={data?.user.email}
               onChange={handleChange}
               sx={{ mb: 2 }}
               InputProps={{ endAdornment: <AlternateEmail color="primary" /> }}
@@ -282,7 +287,7 @@ const EditScreen = () => {
               name="country"
               placeholder="Country"
               label="Country"
-              defaultValue={data.user?.country}
+              defaultValue={data?.user.country}
               onChange={handleChange}
               sx={{ mb: 2, fontSize: 24 }}
               InputProps={{ endAdornment: <MapSharp color="primary" /> }}
@@ -294,7 +299,7 @@ const EditScreen = () => {
               type="number"
               placeholder="Phone Number (e.g +234)"
               label="Phone Number"
-              defaultValue={data.user?.phone}
+              defaultValue={data?.user.phone}
               onChange={handleChange}
               InputProps={{
                 endAdornment: <ContactPhoneOutlined color="primary" />,
@@ -305,7 +310,7 @@ const EditScreen = () => {
 
             <TextField
               onChange={handleChange}
-              defaultValue={data.user?.bios}
+              defaultValue={data?.user.bios}
               multiline
               rows={6}
               name="bios"

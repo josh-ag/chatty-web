@@ -18,11 +18,9 @@ import {
   Drawer,
   ListItem,
   ListItemText,
-  Grid,
 } from "@mui/material";
 import {
   MenuOutlined,
-  Logout,
   Close,
   Search,
   SearchRounded,
@@ -169,12 +167,6 @@ export default function Navbar() {
     }
   });
 
-  //handle user logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("loginId");
-  };
-
   //handle change bgcolor onscroll
   const changeBackground = () => {
     if (window.scrollY >= statusBarHeight) {
@@ -206,7 +198,8 @@ export default function Navbar() {
       icon: <PermContactCalendarRounded />,
     },
 
-    { path: "/chat", name: "Chat", icon: <VideoCallRounded /> },
+    { path: "/", name: "Chat", icon: <VideoCallRounded /> },
+    { path: "/dashboard", name: "Dashboard", icon: <DashboardRounded /> },
   ];
 
   //drawer items
@@ -214,76 +207,32 @@ export default function Navbar() {
     <Box
       sx={{
         width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
-        pb: 2,
         bgcolor: deepPurple[50],
       }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item xs={10} sm={6}>
-          <List sx={{ alignItems: "flex-start" }}>
-            {drawerListItems.map((item) => (
-              <ListItem
-                key={item.name}
-                component={RouterLink}
-                to={item.path}
-                button
-                sx={{
-                  textDecoration: "none",
-                  color: grey[700],
-                  ":active": {
-                    color: "inherit",
-                  },
-                }}
-              >
-                <ListItemIcon>{item?.icon}</ListItemIcon>
-                <ListItemText>{item?.name}</ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-        <Grid item xs={10} sm={6} md={6}>
-          {/* <Divider /> */}
-
-          <List>
-            <ListItem
-              component={RouterLink}
-              to={`/dashboard`}
-              sx={{
-                textDecoration: "none",
-                width: "auto",
-                color: "#333",
-                fontSize: 18,
-                ":active": {
-                  color: "inherit",
-                },
-              }}
-            >
-              <DashboardRounded fontSize="small" sx={{ color: grey[700] }} />
-              <ListItemText sx={{ ml: 1, color: grey[700] }}>
-                Dashboard
-              </ListItemText>
-            </ListItem>
-            <ListItem
-              sx={{
-                textDecoration: "none",
-                width: "auto",
-                color: red[500],
-                fontSize: 18,
-                cursor: "pointer",
-              }}
-              onClick={handleLogout}
-            >
-              <Logout sx={{ color: red[400] }} />
-              <ListItemText sx={{ ml: 1, color: red[400] }}>
-                Logout
-              </ListItemText>
-            </ListItem>
-          </List>
-        </Grid>
-      </Grid>
+      <List sx={{ alignItems: "center", justifyContent: "center" }}>
+        {drawerListItems.map((item) => (
+          <ListItem
+            key={item.name}
+            component={RouterLink}
+            to={item.path}
+            button
+            sx={{
+              textDecoration: "none",
+              color: grey[700],
+              ":active": {
+                color: "inherit",
+              },
+            }}
+          >
+            <ListItemIcon>{item?.icon}</ListItemIcon>
+            <ListItemText>{item?.name}</ListItemText>
+          </ListItem>
+        ))}
+      </List>
 
       <List>
         <ListItem component={RouterLink} to="/search">
@@ -390,7 +339,7 @@ export default function Navbar() {
                 </Button>
                 <Button
                   component={RouterLink}
-                  to="/chat"
+                  to="/"
                   sx={{ borderRadius: 4 }}
                   color={active ? "inherit" : "success"}
                   size="small"

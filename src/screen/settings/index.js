@@ -17,13 +17,18 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <Grid container sx={{ my: 1, mx: 1 }}>
-      <Grid item xs={12} sm={10} md={8}>
+    <Grid
+      container
+      sx={{ width: "100%", alignItems: "stretch", p: 1 }}
+      spacing={1}
+    >
+      <Grid item xs={12} sm={12}>
         <Paper
           sx={{
             p: 4,
             bgcolor: grey[100],
             boxShadow: `0px 0px 2px ${grey[400]}`,
+            width: "100%",
           }}
         >
           <List>

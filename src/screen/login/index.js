@@ -100,16 +100,13 @@ const LoginScreen = () => {
       const { data, error } = await signin(body);
 
       if (error) {
-        console.log("Error: ", error);
-      }
-
-      if (error) {
+        console.log("Login Error: ", error);
         setLoading(false);
         setOpen(true);
         return setMessage((prev) => ({
           ...prev,
           type: "error",
-          message: error.data?.message,
+          message: error.data?.message || error?.error || error?.message,
         }));
       }
 
@@ -127,7 +124,7 @@ const LoginScreen = () => {
         navigate(`/`);
       }, 2000);
     } catch (err) {
-      //
+      //handle other error
     }
   };
 
@@ -157,7 +154,7 @@ const LoginScreen = () => {
             horizontal: "center",
           }}
           open={open}
-          autoHideDuration={6000}
+          autoHideDuration={5000}
           onClose={handleClose}
           sx={{
             textTransform: "uppercase",
@@ -182,7 +179,6 @@ const LoginScreen = () => {
             md: `url(${loginBanner})`,
             sm: `url(${loginBanner})`,
             xs: `url(${loginBanner})`,
-            lg: "inherit",
           },
           backgroundAttachment: "fixed",
           backgroundOrigin: "border-box",
@@ -191,19 +187,6 @@ const LoginScreen = () => {
           backgroundRepeat: "none",
         }}
       >
-        <Box
-          sx={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            backgroundImage: `url(${loginBanner})`,
-            backgroundOrigin: "top",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "none",
-            display: { xs: "none", sm: "none", md: "none", lg: "block" },
-          }}
-        />
         <Grid
           container
           sx={{ px: 4, justifyContent: "center", alignItems: "center", pb: 4 }}
