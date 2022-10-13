@@ -3,7 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/user",
+    baseUrl:
+      process.env.NODE_ENV === "production" ? process.env.API_BASE_URL : "/api",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
 
@@ -18,7 +19,7 @@ export const api = createApi({
   endpoints: (builder) => ({
     signin: builder.mutation({
       query: (loginInfo) => ({
-        url: "/login",
+        url: "/user/login",
         body: loginInfo,
         method: "post",
       }),
@@ -26,7 +27,7 @@ export const api = createApi({
 
     register: builder.mutation({
       query: (registerInfo) => ({
-        url: "/register",
+        url: "/user/register",
         body: registerInfo,
         method: "post",
       }),
@@ -34,7 +35,7 @@ export const api = createApi({
 
     getProfile: builder.query({
       query: () => ({
-        url: `/profile`,
+        url: `/user/profile`,
         method: "get",
       }),
     }),
@@ -45,7 +46,7 @@ export const api = createApi({
 
     verifyAccount: builder.mutation({
       query: (verifyData) => ({
-        url: "/account/verify",
+        url: "/user/account/verify",
         body: verifyData,
         method: "put",
       }),
@@ -53,7 +54,7 @@ export const api = createApi({
 
     resetPassword: builder.mutation({
       query: (newPassword) => ({
-        url: `/password/reset`,
+        url: `/user/password/reset`,
         body: newPassword,
         method: "post",
       }),

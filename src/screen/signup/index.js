@@ -7,12 +7,12 @@ import {
   Button,
   IconButton,
   useTheme,
-  Snackbar,
   Alert,
   TextField,
   Stack,
   Backdrop,
   CircularProgress,
+  Collapse,
 } from "@mui/material";
 
 import {
@@ -26,6 +26,7 @@ import {
   Facebook,
   Google,
   VpnKey,
+  Close,
 } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import logoSignup from "../../assets/logo_signup.jpg";
@@ -149,15 +150,6 @@ const SignupScreen = () => {
     }
   };
 
-  //handle closing snackbar
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
   return (
     <>
       {loading && (
@@ -182,23 +174,6 @@ const SignupScreen = () => {
         </Backdrop>
       )}
 
-      {message && (
-        <Snackbar
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-        >
-          <Alert
-            variant="filled"
-            onClose={handleClose}
-            severity={message.type}
-            sx={{ fontSize: 12 }}
-          >
-            {message.message}
-          </Alert>
-        </Snackbar>
-      )}
       <Box
         sx={{
           width: "100%",
@@ -271,6 +246,28 @@ const SignupScreen = () => {
               onSubmit={handleSubmit}
               noValidate
             >
+              {message?.message && (
+                <Collapse in={open} timeout={500}>
+                  <Alert
+                    severity={message.type}
+                    sx={{ mb: 2, textTransform: "capitalize" }}
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <Close fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {message.message}
+                  </Alert>
+                </Collapse>
+              )}
               <Stack direction={"row"} spacing={1}>
                 <TextField
                   error={!firstname && error}
@@ -487,25 +484,6 @@ const SignupScreen = () => {
               </Button>
             </Stack>
           </Paper>
-          {message && (
-            <Snackbar
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              open={open}
-              autoHideDuration={6000}
-              onClose={handleClose}
-            >
-              <Alert
-                variant="filled"
-                onClose={handleClose}
-                severity={message.type}
-                sx={{
-                  textTransform: "uppercase",
-                }}
-              >
-                {message.message}
-              </Alert>
-            </Snackbar>
-          )}
         </Container>
       </Box>
     </>

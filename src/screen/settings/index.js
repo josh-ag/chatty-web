@@ -1,6 +1,5 @@
 import { ColorizeOutlined, Language } from "@mui/icons-material";
 import {
-  Box,
   List,
   Paper,
   ListItem,

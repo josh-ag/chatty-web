@@ -82,14 +82,14 @@ const HomeScreen = () => {
               justifyContent: "center",
             }}
           >
-            <Grid item xs={12} sm={10} md={6} xl={6}>
+            <Grid item xs={12} sm={10} md={8} lg={6} xl={6}>
               <img
                 src={showcase}
                 alt="hero section banner"
                 style={{ width: "100%", height: "100%" }}
               />
             </Grid>
-            <Grid item xs={12} sm={10} md={6} xl={4}>
+            <Grid item xs={12} sm={10} md={8} lg={4} xl={4}>
               <Box
                 sx={{
                   display: "flex",

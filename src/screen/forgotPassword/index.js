@@ -7,16 +7,16 @@ import {
   Button,
   IconButton,
   useTheme,
-  Snackbar,
   Alert,
   TextField,
   Backdrop,
   CircularProgress,
+  Collapse,
 } from "@mui/material";
-import { AlternateEmail } from "@mui/icons-material";
+import { AlternateEmail, Close } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import logoForgotPassword from "../../assets/forgot_passwd.svg";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { useResetPasswordMutation } from "../../features/services/queries";
 
@@ -30,15 +30,6 @@ const ForgotPasswordScreen = () => {
 
   const theme = useTheme();
   const navigate = useNavigate();
-
-  //handle close snackbar
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,25 +114,6 @@ const ForgotPasswordScreen = () => {
         </Backdrop>
       )}
 
-      {/* MESSAGES */}
-      {message && (
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={open}
-          autoHideDuration={5000}
-          onClose={handleClose}
-          sx={{ textTransform: "uppercase" }}
-        >
-          <Alert
-            variant="filled"
-            onClose={handleClose}
-            severity={message.type}
-            // sx={{ fontSize: 12 }}
-          >
-            {message.message}
-          </Alert>
-        </Snackbar>
-      )}
       <Box
         sx={{
           width: "100%",
@@ -216,6 +188,28 @@ const ForgotPasswordScreen = () => {
                 autoComplete="off"
                 onSubmit={handleSubmit}
               >
+                {message?.message && (
+                  <Collapse in={open} timeout={500}>
+                    <Alert
+                      severity={message.type}
+                      sx={{ mb: 2, textTransform: "capitalize" }}
+                      action={
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          size="small"
+                          onClick={() => {
+                            setOpen(false);
+                          }}
+                        >
+                          <Close fontSize="inherit" />
+                        </IconButton>
+                      }
+                    >
+                      {message.message}
+                    </Alert>
+                  </Collapse>
+                )}
                 <TextField
                   onChange={(e) => setEmail(e.target.value)}
                   error={!email && error}

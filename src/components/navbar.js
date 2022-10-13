@@ -34,7 +34,7 @@ import {
 } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import chattyLogo from "../assets/rounded-chat.png";
-import { deepPurple, grey, red } from "@mui/material/colors";
+import { deepPurple, grey } from "@mui/material/colors";
 import { styled } from "@mui/system";
 
 const statusBarHeight = 50;

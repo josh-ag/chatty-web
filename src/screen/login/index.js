@@ -7,12 +7,13 @@ import {
   Button,
   IconButton,
   useTheme,
-  Snackbar,
   Alert,
   TextField,
   Stack,
   CircularProgress,
   Backdrop,
+  Collapse,
+  AlertTitle,
 } from "@mui/material";
 import {
   Visibility,
@@ -22,6 +23,7 @@ import {
   Facebook,
   Google,
   VpnKey,
+  Close,
 } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -128,14 +130,6 @@ const LoginScreen = () => {
     }
   };
 
-  //handle closing snackbar
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-
   return (
     <>
       {isLoading && (
@@ -145,30 +139,6 @@ const LoginScreen = () => {
         >
           <CircularProgress color="primary" />
         </Backdrop>
-      )}
-
-      {message && (
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-          open={open}
-          autoHideDuration={5000}
-          onClose={handleClose}
-          sx={{
-            textTransform: "uppercase",
-          }}
-        >
-          <Alert
-            variant="filled"
-            onClose={handleClose}
-            severity={message.type}
-            sx={{ fontSize: 12 }}
-          >
-            {message.message}
-          </Alert>
-        </Snackbar>
       )}
       <Box
         sx={{
@@ -234,6 +204,28 @@ const LoginScreen = () => {
                   Login To Continue
                 </Typography>
               </Box>
+              {message?.message && (
+                <Collapse in={open} timeout={500}>
+                  <Alert
+                    severity={message?.type}
+                    sx={{ mb: 2, textTransform: "capitalize" }}
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <Close fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {message?.message}
+                  </Alert>
+                </Collapse>
+              )}
               <Box
                 component="form"
                 noValidate
