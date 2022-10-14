@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_BASE_URL = "https://chatty-web-server.herokuapp.com/api";
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -41,7 +42,11 @@ export const api = createApi({
     }),
 
     updateProfile: builder.mutation({
-      query: (data) => ({ url: `/${data.id}`, body: data.body, method: "put" }),
+      query: (data) => ({
+        url: `/user/${data.id}`,
+        body: data.body,
+        method: "put",
+      }),
     }),
 
     verifyAccount: builder.mutation({

@@ -87,14 +87,7 @@ function App() {
               </DashboardLayout>
             }
           />
-          <Route
-            path="/dashboard/settings"
-            element={
-              <DashboardLayout>
-                <SettingsScreen />
-              </DashboardLayout>
-            }
-          />
+
           <Route
             path="/profile"
             element={
@@ -103,6 +96,12 @@ function App() {
               </DashboardLayout>
             }
           />
+
+          <Route path="/search" element={<SearchScreen />} />
+          <Route path="/success" element={<SuccessConfirmation />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/signup" element={<SignupScreen />} />
+          <Route path="/forgot" element={<ForgotPasswordScreen />} />
           <Route
             path="/dashboard/favorites"
             element={
@@ -120,6 +119,19 @@ function App() {
             }
           />
           <Route
+            path="/dashboard/settings"
+            element={
+              <DashboardLayout>
+                <SettingsScreen />
+              </DashboardLayout>
+            }
+          />
+
+          <Route path="/password/new" element={<ResetPasswordScreen />} />
+          <Route path="/account/verify" element={<VerifyScreen />} />
+          <Route path="/password/token" element={<PasswordToken />} />
+          <Route path="/reset/error" element={<ErrorScreen />} />
+          <Route
             path="/profile/edit/:id"
             element={
               <DashboardLayout>
@@ -127,15 +139,6 @@ function App() {
               </DashboardLayout>
             }
           />
-          <Route path="/search" element={<SearchScreen />} />
-          <Route path="/success" element={<SuccessConfirmation />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/signup" element={<SignupScreen />} />
-          <Route path="/forgot" element={<ForgotPasswordScreen />} />
-          <Route path="/password/new" element={<ResetPasswordScreen />} />
-          <Route path="/account/verify" element={<VerifyScreen />} />
-          <Route path="/password/token" element={<PasswordToken />} />
-          <Route path="/reset/error" element={<ErrorScreen />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

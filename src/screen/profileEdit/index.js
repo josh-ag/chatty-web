@@ -8,16 +8,18 @@ import {
   InputLabel,
   Backdrop,
   CircularProgress,
-  Snackbar,
   Alert,
   Grid,
   Tooltip,
+  Collapse,
+  IconButton,
 } from "@mui/material";
 import { grey, yellow } from "@mui/material/colors";
 import { useState } from "react";
 import {
   AddAPhotoRounded,
   AlternateEmail,
+  Close,
   ContactPhoneOutlined,
   MapSharp,
   PersonOutlineRounded,
@@ -131,14 +133,6 @@ const EditScreen = () => {
     }));
   };
 
-  //handle closing snackbar
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-
   if (!token || !loginId) {
     return <Navigate to="/login" />;
   }
@@ -162,30 +156,6 @@ const EditScreen = () => {
       spacing={1}
     >
       <Grid item xs={12} sm={12} md={6}>
-        {message && (
-          <Snackbar
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            open={open}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            sx={{
-              textTransform: "uppercase",
-            }}
-          >
-            <Alert
-              variant="filled"
-              onClose={handleClose}
-              severity={message.type}
-              sx={{ fontSize: 12 }}
-            >
-              {message.message}
-            </Alert>
-          </Snackbar>
-        )}
-
         <Paper sx={{ p: 4, bgcolor: grey[100] }}>
           <Box
             component="form"
@@ -237,6 +207,28 @@ const EditScreen = () => {
             <Typography variant="h5" sx={{ mb: 4, textAlign: "center" }}>
               Edit Profile
             </Typography>
+            {message?.message && (
+              <Collapse in={open} timeout={500}>
+                <Alert
+                  severity={message?.type}
+                  sx={{ mb: 2, textTransform: "capitalize" }}
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      <Close fontSize="inherit" />
+                    </IconButton>
+                  }
+                >
+                  {message?.message}
+                </Alert>
+              </Collapse>
+            )}
             <TextField
               name="firstname"
               placeholder="Firstname"
