@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Box,
   Grid,
-  Paper,
   Typography,
   Button,
   IconButton,
@@ -13,7 +12,9 @@ import {
   CircularProgress,
   Backdrop,
   Collapse,
-  AlertTitle,
+  Card,
+  CardContent,
+  CardMedia,
 } from "@mui/material";
 import {
   Visibility,
@@ -27,9 +28,16 @@ import {
 } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import logoLogin from "../../assets/logo_login.svg";
+// import logoLogin from "../../assets/logo_login.svg";
+import chat_image from "../../assets/chat.jpg";
 import { grey } from "@mui/material/colors";
 import { useSigninMutation } from "../../features/services/queries";
+import styled from "@emotion/styled";
+
+//create toolbar space equivalent
+const CustomeBox = styled(Box)(({ theme }) => ({
+  height: theme.mixins.toolbar.minHeight,
+}));
 
 const LoginScreen = () => {
   //Internavl state
@@ -108,7 +116,8 @@ const LoginScreen = () => {
         return setMessage((prev) => ({
           ...prev,
           type: "error",
-          message: error.data?.message || error?.error || error?.message,
+          message:
+            error.data?.message || error?.error.split(":")[1] || error?.message,
         }));
       }
 
@@ -140,39 +149,51 @@ const LoginScreen = () => {
           <CircularProgress color="primary" />
         </Backdrop>
       )}
-      <Box
+
+      <Grid
+        container
         sx={{
+          justifyContent: "center",
+          alignItems: "center",
           width: "100%",
           height: "100vh",
           display: "flex",
-          backgroundImage: {
-            md: `url(${loginBanner})`,
-            sm: `url(${loginBanner})`,
-            xs: `url(${loginBanner})`,
-          },
+          backgroundImage: `url(${loginBanner})`,
           backgroundAttachment: "fixed",
-          backgroundOrigin: "border-box",
           backgroundPosition: "top",
           backgroundSize: "cover",
           backgroundRepeat: "none",
         }}
       >
         <Grid
-          container
-          sx={{ px: 4, justifyContent: "center", alignItems: "center", pb: 4 }}
+          item
+          xs={11}
+          sm={10}
+          md={6}
+          p={2}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          <Grid item xs={12} sm={10} md={6}>
-            <Paper
-              sx={{
-                width: { sm: "100%", md: "70%" },
-                p: 4,
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: theme.spacing(2),
-                opacity: 0.9,
-                mt: 6,
-              }}
-            >
+          <CustomeBox />
+          <Card
+            sx={{
+              width: { sm: "100%", md: "70%" },
+              display: "flex",
+              flexDirection: "column",
+              borderRadius: theme.spacing(2),
+              opacity: 0.9,
+            }}
+          >
+            <CardMedia
+              component="img"
+              image={chat_image}
+              alt="login logo"
+              height={200}
+            />
+
+            <CardContent>
               <Box
                 sx={{
                   display: "flex",
@@ -181,27 +202,26 @@ const LoginScreen = () => {
                   flexDirection: "column",
                 }}
               >
-                <img
-                  src={logoLogin}
-                  style={{
-                    width: "auto",
-                    height: 200,
-                    display: "block",
-                    alignSelf: "center",
-                  }}
-                  alt="login logo"
-                />
-
                 <Typography
-                  variant="h5"
-                  my={4}
+                  variant="h4"
+                  mt={1}
                   noWrap
                   sx={{
                     fontWeight: "medium",
                     color: grey[800],
                   }}
                 >
-                  Login To Continue
+                  Login
+                </Typography>
+                <Typography
+                  variant="body1"
+                  mb={2}
+                  noWrap
+                  sx={{
+                    color: grey[800],
+                  }}
+                >
+                  SignIn to continue
                 </Typography>
               </Box>
               {message?.message && (
@@ -394,10 +414,11 @@ const LoginScreen = () => {
                   <LinkedIn />
                 </IconButton>
               </Stack>
-            </Paper>
-          </Grid>
+            </CardContent>
+          </Card>
+          <CustomeBox />
         </Grid>
-      </Box>
+      </Grid>
     </>
   );
 };

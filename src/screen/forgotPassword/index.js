@@ -62,12 +62,15 @@ const ForgotPasswordScreen = () => {
       const { data, error } = await resetPassword({ email });
 
       if (error) {
-        setOpen(true);
+        console.log(error);
+
         setLoading(false);
+        setOpen(true);
         return setMessage((prevState) => ({
           ...prevState,
           type: "error",
-          message: error?.data.message || error?.error,
+          message:
+            error.data?.message || error?.error.split(":")[1] || error?.message,
         }));
       }
 
