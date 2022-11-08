@@ -26,17 +26,17 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
-import { blue, green } from "@mui/material/colors";
+
 import { PasswordToken } from "./screen/passwordToken/passwordToken";
 
 function App() {
   const themeConfig = createTheme({
     palette: {
       primary: {
-        main: blue[800],
+        main: "#B39CD0",
       },
       secondary: {
-        main: green[600],
+        main: "#DBAFFF",
       },
     },
     typography: {

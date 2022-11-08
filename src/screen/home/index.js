@@ -3,7 +3,7 @@ import showcase from "../../assets/showcase.jpg";
 import accessibility from "../../assets/accessibility.jpg";
 import futuristic from "../../assets/futuristic.jpg";
 import secure from "../../assets/secure.svg";
-import { ActionButton } from "../../components/buttons";
+
 import { Link as RouterLink, Navigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import styled from "@emotion/styled";
@@ -131,14 +131,18 @@ const HomeScreen = () => {
                   >
                     Learn More
                   </Button>
-                  <ActionButton
+                  <Button
                     component={RouterLink}
                     to={`/get-started`}
                     variant="contained"
-                    sx={{ ml: 2, textTransform: "capitalize" }}
+                    color="primary"
+                    sx={{
+                      ml: 2,
+                      textTransform: "capitalize",
+                    }}
                   >
                     Get Started
-                  </ActionButton>
+                  </Button>
                 </Stack>
               </Box>
             </Grid>

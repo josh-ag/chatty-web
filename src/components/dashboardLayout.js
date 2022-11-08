@@ -12,6 +12,7 @@ import {
   Button,
   Typography,
   Tooltip,
+  useTheme,
 } from "@mui/material";
 import {
   ArrowBackIosNewOutlined,
@@ -83,6 +84,8 @@ export const DashboardLayout = (props) => {
 
   const token = localStorage.getItem("token");
   const loginId = localStorage.getItem("loginId");
+
+  const theme = useTheme();
 
   //logout user
   const handleLogout = () => {
@@ -187,11 +190,14 @@ export const DashboardLayout = (props) => {
             <ListItem
               key={item.title}
               sx={{
-                ":hover": { bgcolor: blue[50] },
+                ":hover": { color: theme.palette.primary.main },
                 bgcolor:
                   location.pathname === item.path ? blue[50] : grey["A50"],
                 textDecoration: "none",
-                color: location.pathname === item.path ? blue[700] : grey[700],
+                color:
+                  location.pathname === item.path
+                    ? theme.palette.primary.main
+                    : grey[700],
               }}
               component={Link}
               to={item.path}
@@ -199,7 +205,9 @@ export const DashboardLayout = (props) => {
               <ListItemIcon
                 sx={{
                   color:
-                    location.pathname === item.path ? blue[700] : grey[500],
+                    location.pathname === item.path
+                      ? theme.palette.primary.main
+                      : grey[500],
                 }}
               >
                 {item.icon}

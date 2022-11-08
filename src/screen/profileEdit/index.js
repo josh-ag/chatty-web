@@ -6,15 +6,16 @@ import {
   Typography,
   Avatar,
   InputLabel,
-  Backdrop,
   CircularProgress,
   Alert,
-  Grid,
   Tooltip,
   Collapse,
   IconButton,
+  Card,
+  CardContent,
+  CardMedia,
 } from "@mui/material";
-import { grey, yellow } from "@mui/material/colors";
+import { blueGrey, yellow } from "@mui/material/colors";
 import { useState } from "react";
 import {
   AddAPhotoRounded,
@@ -32,6 +33,7 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../features/services/queries";
+import header_image from "../../assets/bg.jpg";
 
 const EditScreen = () => {
   //Internal State
@@ -139,9 +141,17 @@ const EditScreen = () => {
 
   if (isLoading) {
     return (
-      <Backdrop open={isLoading}>
+      <Box
+        sx={{
+          height: 300,
+          background: blueGrey[50],
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <CircularProgress color="primary" />
-      </Backdrop>
+      </Box>
     );
   }
 
@@ -150,182 +160,209 @@ const EditScreen = () => {
   }
 
   return (
-    <Grid
-      container
-      sx={{ width: "100%", alignItems: "stretch", p: 1 }}
-      spacing={1}
+    <Box
+      component="form"
+      autoComplete="off"
+      noValidate={true}
+      onSubmit={handleSubmit}
+      sx={{
+        width: "100%",
+      }}
     >
-      <Grid item xs={12} sm={12} md={6}>
-        <Paper sx={{ p: 4, bgcolor: grey[100] }}>
-          <Box
-            component="form"
-            autoComplete="off"
-            noValidate={true}
-            onSubmit={handleSubmit}
-          >
-            <Box
+      <Card
+        elevation={0}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <CardMedia
+          image={header_image}
+          sx={{
+            width: "100%",
+            height: 300,
+          }}
+        />
+
+        <Paper
+          sx={{
+            width: { xs: "95%", sm: "80%", md: "70%", lg: "60%" },
+            marginTop: -12,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#B39CD0",
+          }}
+          elevation={0}
+        >
+          {profileImage ? (
+            <Avatar
+              src={loginBanner.toString()}
+              sx={{ width: 150, height: 150 }}
+            />
+          ) : (
+            <Avatar
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mb: 6,
+                width: 150,
+                height: 150,
+                bgcolor: "#9B89B3",
+                color: yellow[400],
+                fontSize: 27,
               }}
             >
-              {profileImage ? (
-                <Avatar
-                  src={loginBanner.toString()}
-                  sx={{ width: 150, height: 150 }}
-                />
-              ) : (
-                <Avatar
-                  sx={{
-                    width: 150,
-                    height: 150,
-                    bgcolor: grey[300],
-                    color: yellow[400],
-                    fontSize: 27,
-                  }}
-                >
-                  {data?.user.username.substr(0, 1).toUpperCase()}
-                </Avatar>
-              )}
-              <Box sx={{ ml: 1, alignSelf: "flex-end" }}>
-                <InputLabel htmlFor="Profile">
-                  <Tooltip title="Select new profile" placement="right" arrow>
-                    <AddAPhotoRounded color="primary" />
-                  </Tooltip>
-                </InputLabel>
-                <TextField
-                  name="profile"
-                  id="Profile"
-                  type="file"
-                  onChange={(e) => setProfileImage(e.target.files[0])}
-                  sx={{ display: "none" }}
-                />
-              </Box>
-            </Box>
-            <Typography variant="h5" sx={{ mb: 4, textAlign: "center" }}>
-              Edit Profile
-            </Typography>
-            {message?.message && (
-              <Collapse in={open} timeout={500}>
-                <Alert
-                  severity={message?.type}
-                  sx={{ mb: 2, textTransform: "capitalize" }}
-                  action={
-                    <IconButton
-                      aria-label="close"
-                      color="inherit"
-                      size="small"
-                      onClick={() => {
-                        setOpen(false);
-                      }}
-                    >
-                      <Close fontSize="inherit" />
-                    </IconButton>
-                  }
-                >
-                  {message?.message}
-                </Alert>
-              </Collapse>
-            )}
+              {data?.user.username.substr(0, 1).toUpperCase()}
+            </Avatar>
+          )}
+          <Box sx={{ ml: 1, alignSelf: "flex-end" }}>
+            <InputLabel htmlFor="Profile">
+              <Tooltip title="Select new profile" placement="right" arrow>
+                <AddAPhotoRounded sx={{ color: "#FFC75F" }} />
+              </Tooltip>
+            </InputLabel>
             <TextField
-              name="firstname"
-              placeholder="Firstname"
-              label="Firstname"
-              defaultValue={data?.user.firstname}
-              onChange={handleChange}
-              sx={{ mb: 2 }}
-              InputProps={{ endAdornment: <PersonRounded color="primary" /> }}
-              fullWidth
+              name="profile"
+              id="Profile"
+              type="file"
+              onChange={(e) => setProfileImage(e.target.files[0])}
+              sx={{ display: "none" }}
             />
-            <TextField
-              name="lastname"
-              placeholder="Lastname"
-              label="Lastname"
-              defaultValue={data?.user.lastname}
-              onChange={handleChange}
-              sx={{ mb: 2 }}
-              InputProps={{
-                endAdornment: <PersonOutlineRounded color="primary" />,
-              }}
-              fullWidth
-            />
-
-            <TextField
-              name="username"
-              placeholder="username"
-              label="Username"
-              defaultValue={data?.user.username}
-              onChange={handleChange}
-              sx={{ mb: 2 }}
-              InputProps={{ endAdornment: <VerifiedUser color="primary" /> }}
-              fullWidth
-            />
-
-            <TextField
-              name="email"
-              placeholder="Email"
-              label="Email"
-              defaultValue={data?.user.email}
-              onChange={handleChange}
-              sx={{ mb: 2 }}
-              InputProps={{ endAdornment: <AlternateEmail color="primary" /> }}
-              fullWidth
-              disabled
-            />
-
-            <TextField
-              name="country"
-              placeholder="Country"
-              label="Country"
-              defaultValue={data?.user.country}
-              onChange={handleChange}
-              sx={{ mb: 2, fontSize: 24 }}
-              InputProps={{ endAdornment: <MapSharp color="primary" /> }}
-              fullWidth
-            />
-
-            <TextField
-              name="phone"
-              type="number"
-              placeholder="Phone Number (e.g +234)"
-              label="Phone Number"
-              defaultValue={data?.user.phone}
-              onChange={handleChange}
-              InputProps={{
-                endAdornment: <ContactPhoneOutlined color="primary" />,
-              }}
-              fullWidth
-              sx={{ mb: 2 }}
-            />
-
-            <TextField
-              onChange={handleChange}
-              defaultValue={data?.user.bios}
-              multiline
-              rows={6}
-              name="bios"
-              placeholder="Bio"
-              fullWidth
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2 }}
-              type="submit"
-              disabled={
-                firstname || lastname || username || country || phone || bios
-                  ? false
-                  : true
-              }
-            >
-              update
-            </Button>
           </Box>
         </Paper>
-      </Grid>
-    </Grid>
+        <CardContent
+          sx={{
+            mt: 4,
+            width: { xs: "95%", sm: "80%", md: "70%", lg: "60%" },
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          {message?.message && (
+            <Collapse in={open} timeout={500}>
+              <Alert
+                severity={message?.type}
+                sx={{ mb: 2, textTransform: "capitalize" }}
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <Close fontSize="inherit" />
+                  </IconButton>
+                }
+              >
+                {message?.message}
+              </Alert>
+            </Collapse>
+          )}
+          <TextField
+            name="firstname"
+            placeholder="Firstname"
+            label="Firstname"
+            defaultValue={data?.user.firstname}
+            onChange={handleChange}
+            sx={{ mb: 2 }}
+            InputProps={{
+              endAdornment: <PersonRounded sx={{ color: "#B39CD0" }} />,
+            }}
+            fullWidth
+          />
+          <TextField
+            name="lastname"
+            placeholder="Lastname"
+            label="Lastname"
+            defaultValue={data?.user.lastname}
+            onChange={handleChange}
+            sx={{ mb: 2 }}
+            InputProps={{
+              endAdornment: <PersonOutlineRounded sx={{ color: "#B39CD0" }} />,
+            }}
+            fullWidth
+          />
+
+          <TextField
+            name="username"
+            placeholder="username"
+            label="Username"
+            defaultValue={data?.user.username}
+            onChange={handleChange}
+            sx={{ mb: 2 }}
+            InputProps={{
+              endAdornment: <VerifiedUser sx={{ color: "#B39CD0" }} />,
+            }}
+            fullWidth
+          />
+
+          <TextField
+            name="email"
+            placeholder="Email"
+            label="Email"
+            defaultValue={data?.user.email}
+            onChange={handleChange}
+            sx={{ mb: 2 }}
+            InputProps={{ endAdornment: <AlternateEmail color="disabled" /> }}
+            fullWidth
+            disabled
+          />
+
+          <TextField
+            name="country"
+            placeholder="Country"
+            label="Country"
+            defaultValue={data?.user.country}
+            onChange={handleChange}
+            sx={{ mb: 2, fontSize: 24 }}
+            InputProps={{
+              endAdornment: <MapSharp sx={{ color: "#B39CD0" }} />,
+            }}
+            fullWidth
+          />
+
+          <TextField
+            name="phone"
+            type="number"
+            placeholder="Phone Number (e.g +234)"
+            label="Phone Number"
+            defaultValue={data?.user.phone}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: <ContactPhoneOutlined sx={{ color: "#B39CD0" }} />,
+            }}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+
+          <TextField
+            onChange={handleChange}
+            defaultValue={data?.user.bios}
+            multiline
+            rows={6}
+            name="bios"
+            placeholder="Bio"
+            fullWidth
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2 }}
+            type="submit"
+            disabled={
+              firstname || lastname || username || country || phone || bios
+                ? false
+                : true
+            }
+          >
+            update
+          </Button>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
