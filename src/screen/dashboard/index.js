@@ -3,11 +3,20 @@ import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { Box, CircularProgress, Grid, Paper, useTheme } from "@mui/material";
 import { useGetProfileQuery } from "../../features/services/queries";
+import { Navigate } from "react-router-dom";
 
 const DashboardScreen = () => {
   const theme = useTheme();
 
-  const { data, isLoading } = useGetProfileQuery();
+  const { data, isLoading, error } = useGetProfileQuery();
+
+  console.log(error);
+  if (error && error?.originalStatus === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("loginId");
+
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>
@@ -23,6 +32,10 @@ const DashboardScreen = () => {
       >
         {isLoading ? (
           <CircularProgress />
+        ) : error ? (
+          <Typography variant="headline1" sx={{ color: "error.main" }}>
+            {error?.message || error?.error}
+          </Typography>
         ) : (
           <Typography variant="h4" sx={{ color: grey[100] }} noWrap>
             Welcome Back, {data?.user.username}!

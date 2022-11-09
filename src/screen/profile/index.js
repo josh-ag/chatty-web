@@ -25,7 +25,7 @@ import {
   PersonRounded,
   PhoneOutlined,
 } from "@mui/icons-material";
-import header_image from "../../assets/bg.jpg";
+import header_image from "../../assets/header_image.jpg";
 
 const ProfileScreen = () => {
   const loginId = localStorage.getItem("loginId");
@@ -128,7 +128,6 @@ const ProfileScreen = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-
           background: "#B39CD0",
         }}
         elevation={0}

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 //routes
 import HomeScreen from "./screen/home";
@@ -28,29 +29,59 @@ import {
 } from "@mui/material/styles";
 
 import { PasswordToken } from "./screen/passwordToken/passwordToken";
+import { CssBaseline } from "@mui/material";
+import { useSelector } from "react-redux";
+import { grey } from "@mui/material/colors";
 
 function App() {
-  const themeConfig = createTheme({
-    palette: {
-      primary: {
-        main: "#B39CD0",
-      },
-      secondary: {
-        main: "#DBAFFF",
-      },
-    },
-    typography: {
-      fontFamily: "Outfit",
-      fontWeightLight: 300,
-      fontWeightRegular: 400,
-      fontWeightMedium: 500,
-      fontWeightBold: 700,
-    },
-  });
+  const { mode } = useSelector((state) => state.theme);
+
+  // useMemo();
+  const themeConfig = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          ...(mode === "light"
+            ? {
+                primary: {
+                  main: "#B39CD0",
+                  // main: amber[500],
+                },
+                secondary: {
+                  main: "#DBAFFF",
+                },
+
+                background: {
+                  default: grey[100],
+                  paper: "#fff",
+                },
+              }
+            : {
+                primary: {
+                  main: "#B39CD0",
+                },
+                secondary: {
+                  main: "#DBAFFF",
+                },
+                // background: { paper: "#52546B", default: "#191B2A" },
+                // text: { primary: "#EDEDEE", secondary: grey[300] },
+              }),
+        },
+        typography: {
+          fontFamily: "Outfit",
+          fontWeightLight: 300,
+          fontWeightRegular: 400,
+          fontWeightMedium: 500,
+          fontWeightBold: 700,
+        },
+      }),
+    [mode]
+  );
   const theme = responsiveFontSizes(themeConfig);
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme={true} />
       <BrowserRouter>
         <Routes>
           <Route

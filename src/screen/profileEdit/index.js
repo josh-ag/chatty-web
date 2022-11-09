@@ -33,7 +33,7 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../features/services/queries";
-import header_image from "../../assets/bg.jpg";
+import header_image from "../../assets/header_image.jpg";
 
 const EditScreen = () => {
   //Internal State

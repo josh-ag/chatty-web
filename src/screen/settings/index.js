@@ -1,46 +1,78 @@
-import { ColorizeOutlined, Language } from "@mui/icons-material";
+import { useState } from "react";
+import {
+  DarkMode,
+  Language,
+  LightMode,
+  SettingsBrightness,
+} from "@mui/icons-material";
 import {
   List,
   Paper,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Grid,
+  ButtonGroup,
+  Button,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
 const SettingsScreen = () => {
-  const SettingsItems = [
-    { title: "Language", icon: <Language /> },
-    { title: "theme", icon: <ColorizeOutlined /> },
-  ];
-
+  const [selectedMode, setSelectedMode] = useState("system");
   return (
-    <Grid
-      container
-      sx={{ width: "100%", alignItems: "stretch", p: 1 }}
-      spacing={1}
+    <Paper
+      sx={{
+        m: 1,
+        p: 4,
+        boxShadow: `0px 0px 2px ${grey[400]}`,
+        width: "100%",
+      }}
     >
-      <Grid item xs={12} sm={12}>
-        <Paper
-          sx={{
-            p: 4,
-            bgcolor: grey[100],
-            boxShadow: `0px 0px 2px ${grey[400]}`,
-            width: "100%",
+      <List>
+        <ListItem>
+          <ListItemIcon>
+            <Language />
+          </ListItemIcon>
+          <ListItemText>Language</ListItemText>
+        </ListItem>
+
+        <ListItem
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          <List>
-            {SettingsItems.map((item) => (
-              <ListItem key={item.title}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText>{item.title}</ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      </Grid>
-    </Grid>
+          <ListItemText>Theme</ListItemText>
+
+          <ButtonGroup
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button
+              startIcon={<LightMode />}
+              sx={{ bgcolor: selectedMode === "light" && "primary.dark" }}
+              onClick={() => setSelectedMode("light")}
+            >
+              Light
+            </Button>
+            <Button
+              startIcon={<DarkMode />}
+              sx={{ bgcolor: selectedMode === "dark" && "primary.dark" }}
+              onClick={() => setSelectedMode("dark")}
+            >
+              Dark
+            </Button>
+            <Button
+              startIcon={<SettingsBrightness />}
+              sx={{ bgcolor: selectedMode === "system" && "primary.dark" }}
+              onClick={() => setSelectedMode("system")}
+            >
+              System
+            </Button>
+          </ButtonGroup>
+        </ListItem>
+      </List>
+    </Paper>
   );
 };
 
