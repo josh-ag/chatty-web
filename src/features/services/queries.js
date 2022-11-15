@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_BASE_URL = "https://chatty-web-server.herokuapp.com/api";
+// const LOCAL_API_BASE_URL = "http://localhost:5050/api";
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("__chatty_token__");
 
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -20,7 +21,7 @@ export const api = createApi({
   endpoints: (builder) => ({
     signin: builder.mutation({
       query: (loginInfo) => ({
-        url: "/user/login",
+        url: "/auth/login",
         body: loginInfo,
         method: "post",
       }),
@@ -28,7 +29,7 @@ export const api = createApi({
 
     register: builder.mutation({
       query: (registerInfo) => ({
-        url: "/user/register",
+        url: "/auth/register",
         body: registerInfo,
         method: "post",
       }),
@@ -51,17 +52,25 @@ export const api = createApi({
 
     verifyAccount: builder.mutation({
       query: (verifyData) => ({
-        url: "/user/account/verify",
+        url: "/auth/verify",
         body: verifyData,
         method: "put",
       }),
     }),
 
     resetPassword: builder.mutation({
-      query: (newPassword) => ({
-        url: `/user/password/reset`,
-        body: newPassword,
+      query: (resetData) => ({
+        url: `/auth/password/reset`,
+        body: resetData,
         method: "post",
+      }),
+    }),
+
+    setNewPassword: builder.mutation({
+      query: (newPassword) => ({
+        url: `/auth/password/new`,
+        body: newPassword,
+        method: "put",
       }),
     }),
   }),
@@ -74,4 +83,5 @@ export const {
   useUpdateProfileMutation,
   useResetPasswordMutation,
   useVerifyAccountMutation,
+  useSetNewPasswordMutation,
 } = api;

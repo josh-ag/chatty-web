@@ -4,16 +4,17 @@ import { grey } from "@mui/material/colors";
 import { Box, CircularProgress, Grid, Paper, useTheme } from "@mui/material";
 import { useGetProfileQuery } from "../../features/services/queries";
 import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/reducers/authSlice";
 
 const DashboardScreen = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const { data, isLoading, error } = useGetProfileQuery();
 
-  console.log(error);
   if (error && error?.originalStatus === 401) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("loginId");
+    dispatch(logOut());
 
     return <Navigate to="/login" />;
   }
@@ -34,7 +35,7 @@ const DashboardScreen = () => {
           <CircularProgress />
         ) : error ? (
           <Typography variant="headline1" sx={{ color: "error.main" }}>
-            {error?.message || error?.error}
+            {error?.message || error?.error.split(":")[1]}
           </Typography>
         ) : (
           <Typography variant="h4" sx={{ color: grey[100] }} noWrap>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   AppBar,
   Box,
@@ -32,7 +32,7 @@ import {
   VideoCallOutlined,
   VideoCallRounded,
 } from "@mui/icons-material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import chattyLogo from "../assets/rounded-chat.png";
 import { deepPurple, grey } from "@mui/material/colors";
 import { styled } from "@mui/system";
@@ -155,16 +155,6 @@ export default function Navbar() {
     left: false,
     bottom: false,
     right: false,
-  });
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const loginId = localStorage.getItem("loginId");
-    if (!token || !loginId) {
-      navigate("/login");
-    }
   });
 
   //handle change bgcolor onscroll

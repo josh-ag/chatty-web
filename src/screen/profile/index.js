@@ -11,9 +11,8 @@ import {
   Stack,
   Tooltip,
 } from "@mui/material";
-import { useNavigate, Link, Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { useGetProfileQuery } from "../../features/services/queries";
-import { useEffect } from "react";
 import { deepPurple, grey, orange } from "@mui/material/colors";
 import {
   AccountCircleOutlined,
@@ -26,24 +25,16 @@ import {
   PhoneOutlined,
 } from "@mui/icons-material";
 import header_image from "../../assets/header_image.jpg";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/reducers/authSlice";
 
 const ProfileScreen = () => {
-  const loginId = localStorage.getItem("loginId");
-  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate();
   const { data, error, isLoading } = useGetProfileQuery();
 
-  useEffect(() => {
-    if (error?.originalStatus === 401 || error?.data === "Unauthorized") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("loginId");
-
-      navigate("/login");
-    }
-  });
-
-  if (!token || !loginId) {
+  if (error?.originalStatus === 401 || error?.data === "Unauthorized") {
+    dispatch(logOut());
     return <Navigate to="/login" />;
   }
 

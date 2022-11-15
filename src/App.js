@@ -10,7 +10,6 @@ import ForgotPasswordScreen from "./screen/forgotPassword";
 import { AppLayout } from "./components/appLayout";
 import { DashboardLayout } from "./components/dashboardLayout";
 import SuccessConfirmation from "./screen/sent";
-import ResetPasswordScreen from "./screen/resetPassword";
 import ChatScreen from "./screen/chat";
 import SearchScreen from "./screen/search";
 import ErrorScreen from "./screen/error";
@@ -22,13 +21,13 @@ import DashboardScreen from "./screen/dashboard";
 import FavoritesScreen from "./screen/favorites";
 import NotificationScreen from "./screen/notifications";
 import { VerifyScreen } from "./screen/verify/verifyScreen";
+import NewPassword from "./screen/newPassword";
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
 
-import { PasswordToken } from "./screen/passwordToken/passwordToken";
 import { CssBaseline } from "@mui/material";
 import { useSelector } from "react-redux";
 import { grey } from "@mui/material/colors";
@@ -132,7 +131,7 @@ function App() {
           <Route path="/success" element={<SuccessConfirmation />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/signup" element={<SignupScreen />} />
-          <Route path="/forgot" element={<ForgotPasswordScreen />} />
+
           <Route
             path="/dashboard/favorites"
             element={
@@ -157,10 +156,9 @@ function App() {
               </DashboardLayout>
             }
           />
-
-          <Route path="/password/new" element={<ResetPasswordScreen />} />
+          <Route path="/password/forgot" element={<ForgotPasswordScreen />} />
+          <Route path="/password/new" element={<NewPassword />} />
           <Route path="/account/verify" element={<VerifyScreen />} />
-          <Route path="/password/token" element={<PasswordToken />} />
           <Route path="/reset/error" element={<ErrorScreen />} />
           <Route
             path="/profile/edit/:id"

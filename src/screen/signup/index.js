@@ -126,7 +126,10 @@ const SignupScreen = () => {
         return setMessage({
           ...message,
           type: "error",
-          message: error?.data?.message || error?.error || error?.message,
+          message:
+            error?.data?.message ||
+            error?.error.split(":")[1] ||
+            error?.message,
         });
       }
 

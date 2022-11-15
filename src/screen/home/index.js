@@ -4,7 +4,7 @@ import accessibility from "../../assets/accessibility.jpg";
 import futuristic from "../../assets/futuristic.jpg";
 import secure from "../../assets/secure.svg";
 
-import { Link as RouterLink, Navigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import styled from "@emotion/styled";
 
@@ -53,177 +53,170 @@ const HomeScreen = () => {
     },
   ];
 
-  const token = localStorage.getItem("token");
-  const loginId = localStorage.getItem("loginId");
-
-  if (!token || !loginId) {
-    return <Navigate to={"/login"} />;
-  } else {
-    return (
-      <>
-        <Box
+  return (
+    <>
+      <Box
+        sx={{
+          width: "100%",
+          minHeight: { xs: "80vh", sm: "70" },
+          height: "100%",
+          bgcolor: "background.default",
+          px: 4,
+          py: 4,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
           sx={{
-            width: "100%",
-            minHeight: { xs: "80vh", sm: "70" },
             height: "100%",
-            bgcolor: "background.default",
-            px: 4,
-            py: 4,
-            display: "flex",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Grid item xs={12} sm={10} md={8} lg={6} xl={6}>
-              <img
-                src={showcase}
-                alt="hero section banner"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={10} md={8} lg={4} xl={4}>
-              <Box
+          <Grid item xs={12} sm={10} md={8} lg={6} xl={6}>
+            <img
+              src={showcase}
+              alt="hero section banner"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={10} md={8} lg={4} xl={4}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "stretch",
+              }}
+            >
+              <Typography
+                variant="h4"
+                textAlign={"center"}
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "stretch",
+                  color: grey[800],
+                  fontWeight: 300,
+                  overflow: "hidden",
                 }}
               >
+                Build Real Connections
+              </Typography>
+              <Typography
+                variant="h5"
+                textAlign={"center"}
+                sx={{
+                  color: grey[700],
+                  mt: 2,
+                  overflow: "hidden",
+                  fontWeight: 200,
+                }}
+              >
+                Reliable, Trustworthy And Efficient
+              </Typography>
+
+              <Stack direction="row" spacing={2} sx={{ mt: 6 }}>
+                <Button
+                  component={RouterLink}
+                  to={`/`}
+                  variant="outlined"
+                  sx={{ textTransform: "capitalize" }}
+                >
+                  Learn More
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to={`/get-started`}
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    ml: 2,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  Get Started
+                </Button>
+              </Stack>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Container sx={{ my: 4 }}>
+        <Typography
+          variant="h4"
+          textAlign={"center"}
+          sx={{ color: grey[800], my: 2 }}
+          noWrap
+        >
+          Features
+        </Typography>
+
+        {features.map((feature) => (
+          <Box sx={{ width: "100%", py: 4 }} key={feature.title}>
+            <Grid
+              container
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                xl={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  py: 4,
+                }}
+              >
+                <Image src={feature.banner} alt={feature.bannerTitle} />
+              </Grid>
+              <Grid item xs={12} sm={8} md={8} xl={4}>
                 <Typography
                   variant="h4"
                   textAlign={"center"}
-                  sx={{
-                    color: grey[800],
-                    fontWeight: 300,
-                    overflow: "hidden",
-                  }}
+                  sx={{ color: grey[900], py: 2 }}
+                  noWrap
                 >
-                  Build Real Connections
+                  {feature.title}
                 </Typography>
-                <Typography
-                  variant="h5"
-                  textAlign={"center"}
-                  sx={{
-                    color: grey[700],
-                    mt: 2,
-                    overflow: "hidden",
-                    fontWeight: 200,
-                  }}
-                >
-                  Reliable, Trustworthy And Efficient
-                </Typography>
-
-                <Stack direction="row" spacing={2} sx={{ mt: 6 }}>
-                  <Button
-                    component={RouterLink}
-                    to={`/`}
-                    variant="outlined"
-                    sx={{ textTransform: "capitalize" }}
-                  >
-                    Learn More
-                  </Button>
-                  <Button
-                    component={RouterLink}
-                    to={`/get-started`}
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      ml: 2,
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    Get Started
-                  </Button>
-                </Stack>
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-
-        <Container sx={{ my: 4 }}>
-          <Typography
-            variant="h4"
-            textAlign={"center"}
-            sx={{ color: grey[800], my: 2 }}
-            noWrap
-          >
-            Features
-          </Typography>
-
-          {features.map((feature) => (
-            <Box sx={{ width: "100%", py: 4 }} key={feature.title}>
-              <Grid
-                container
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  xl={4}
+                <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "center",
+                    flexDirection: "column",
                     alignItems: "center",
-                    py: 4,
+                    px: 4,
                   }}
                 >
-                  <Image src={feature.banner} alt={feature.bannerTitle} />
-                </Grid>
-                <Grid item xs={12} sm={8} md={8} xl={4}>
                   <Typography
-                    variant="h4"
-                    textAlign={"center"}
-                    sx={{ color: grey[900], py: 2 }}
-                    noWrap
+                    textAlign={"justify"}
+                    variant="body1"
+                    sx={{ color: grey[700], fontSize: 18 }}
                   >
-                    {feature.title}
+                    {feature.body}
                   </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      px: 4,
-                    }}
+                  <Button
+                    component={RouterLink}
+                    to={feature.path}
+                    sx={{ textTransform: "capitalize", fontSize: 16, mt: 1 }}
+                    variant="outlined"
                   >
-                    <Typography
-                      textAlign={"justify"}
-                      variant="body1"
-                      sx={{ color: grey[700], fontSize: 18 }}
-                    >
-                      {feature.body}
-                    </Typography>
-                    <Button
-                      component={RouterLink}
-                      to={feature.path}
-                      sx={{ textTransform: "capitalize", fontSize: 16, mt: 1 }}
-                      variant="outlined"
-                    >
-                      learn more
-                    </Button>
-                  </Box>
-                </Grid>
+                    learn more
+                  </Button>
+                </Box>
               </Grid>
-            </Box>
-          ))}
-        </Container>
-      </>
-    );
-  }
+            </Grid>
+          </Box>
+        ))}
+      </Container>
+    </>
+  );
 };
 
 export default HomeScreen;

@@ -34,6 +34,8 @@ import {
   useUpdateProfileMutation,
 } from "../../features/services/queries";
 import header_image from "../../assets/header_image.jpg";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/reducers/authSlice";
 
 const EditScreen = () => {
   //Internal State
@@ -48,16 +50,20 @@ const EditScreen = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState({ type: null, message: null });
 
-  const token = localStorage.getItem("token");
-  const loginId = localStorage.getItem("loginId");
-
   const { firstname, lastname, username, country, phone, bios } = updateForm;
   const [profileImage, setProfileImage] = useState(null);
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   //use Context
   const { data, isLoading, error } = useGetProfileQuery();
   const [updateProfile] = useUpdateProfileMutation();
+
+  //redirect to login if server return unauthorized statusCode
+  if (error && error?.originalStatus === 401) {
+    dispatch(logOut());
+    return <Navigate to="/login" />;
+  }
 
   const handleChange = (e) => {
     setUpdateForm((prevState) => ({
@@ -134,10 +140,6 @@ const EditScreen = () => {
       bios: "",
     }));
   };
-
-  if (!token || !loginId) {
-    return <Navigate to="/login" />;
-  }
 
   if (isLoading) {
     return (

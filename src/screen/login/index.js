@@ -28,7 +28,6 @@ import {
 } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-// import logoLogin from "../../assets/logo_login.svg";
 import chat_image from "../../assets/chat.jpg";
 import { grey } from "@mui/material/colors";
 import { useSigninMutation } from "../../features/services/queries";
@@ -121,8 +120,7 @@ const LoginScreen = () => {
         }));
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("loginId", data.id);
+      localStorage.setItem("__chatty_token__", data.token);
 
       setOpen(true);
       setMessage((prev) => ({
@@ -200,6 +198,7 @@ const LoginScreen = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "column",
+                  mb: 2,
                 }}
               >
                 <Typography
@@ -329,7 +328,7 @@ const LoginScreen = () => {
               >
                 <Button
                   component={RouterLink}
-                  to="/forgot"
+                  to="/password/forgot"
                   sx={{
                     alignSelf: "flex-start",
                     textTransform: "capitalize",
@@ -402,7 +401,7 @@ const LoginScreen = () => {
               <Stack
                 direction={"row"}
                 spacing={2}
-                sx={{ alignSelf: "center", mt: 2 }}
+                sx={{ alignSelf: "center", mt: 2, justifyContent: "center" }}
               >
                 <IconButton sx={{ color: theme.palette.warning.main }}>
                   <Google />

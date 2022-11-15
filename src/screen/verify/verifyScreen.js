@@ -13,13 +13,13 @@ import {
   CircularProgress,
   Collapse,
 } from "@mui/material";
-import { AlternateEmail, Close } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import { grey } from "@mui/material/colors";
+import { useNavigation } from "react-router-dom";
 import { useVerifyAccountMutation } from "../../features/services/queries";
 
 export const VerifyScreen = () => {
-  const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [message, setMessage] = useState({ type: null, message: null });
   const [open, setOpen] = useState(false);
@@ -28,35 +28,25 @@ export const VerifyScreen = () => {
   const [verifyAccount] = useVerifyAccountMutation();
 
   const theme = useTheme();
+  const navigate = useNavigation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     //reset message state
+    setLoading(true);
+    setError(false);
     setOpen(false);
     setMessage((prev) => ({ ...prev, type: null, message: null }));
-    setLoading(true);
-
-    const emailPattern =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (!email || !token) {
-      setLoading(false);
-      return setError(true);
-    }
-
-    if (email && !emailPattern.test(email)) {
-      setLoading(false);
-      setOpen(true);
-      return setMessage((prev) => ({
-        ...prev,
-        type: "error",
-        message: "Invalid email",
-      }));
-    }
 
     try {
-      const { data, error } = await verifyAccount({ email, token });
+      if (!token) {
+        setLoading(false);
+        setError(true);
+        return;
+      }
+
+      const { data, error } = await verifyAccount({ verifyCode: token });
 
       if (error) {
         setOpen(true);
@@ -64,21 +54,15 @@ export const VerifyScreen = () => {
         return setMessage((prevState) => ({
           ...prevState,
           type: "error",
-          message: error?.data.message || error?.error,
+          message: error?.data?.message || error?.error.split(":")[1],
         }));
       }
 
-      setLoading(false);
-      setOpen(true);
-      setMessage((prevState) => ({
-        ...prevState,
-        type: "success",
-        message: data.message,
-      }));
-
-      //reset state
-      setEmail("");
-      setToken("");
+      if (data) {
+        //reset state
+        setToken("");
+        setTimeout(() => navigate("/success"), 1500);
+      }
     } catch (error) {
       //handle error
     }
@@ -186,36 +170,15 @@ export const VerifyScreen = () => {
                 onSubmit={handleSubmit}
               >
                 <TextField
-                  onChange={(e) => setEmail(e.target.value)}
-                  error={!email && error}
-                  type="email"
-                  label="Email"
-                  placeholder="Email address"
-                  defaultValue={email}
-                  sx={{ mb: 1 }}
-                  helperText="Email is required*"
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton
-                        edge="start"
-                        color={!email && error ? "error" : "default"}
-                      >
-                        <AlternateEmail fontSize="small" />
-                      </IconButton>
-                    ),
-                  }}
-                  fullWidth
-                />
-
-                <TextField
                   onChange={(e) => setToken(e.target.value)}
                   error={!token && error}
                   type="text"
-                  label="Token"
-                  placeholder="verification token"
+                  name="verifyCode"
+                  label="Verification Code"
+                  placeholder="Enter Verification Code"
                   defaultValue={token}
                   sx={{ mb: 1 }}
-                  helperText="Token is required*"
+                  helperText="Verification is required*"
                   fullWidth
                 />
 

@@ -59,16 +59,19 @@ const SuccessConfirmation = () => {
             alt="Success message logo"
           />
           <Typography
-            variant="h2"
+            variant="h4"
             textAlign={"center"}
             sx={{ color: grey[700], mt: 4 }}
             noWrap
           >
             Congratulation!
           </Typography>
-          <Typography textAlign={"center"} sx={{ my: 2, color: grey[700] }}>
-            Reset instructions has been sent. Please check your email and follow
-            the instructions
+          <Typography
+            variant="body1"
+            textAlign={"center"}
+            sx={{ my: 2, color: grey[700] }}
+          >
+            Your email has been verfied successfully
           </Typography>
         </Paper>
         <Box sx={{ mt: 2 }}>

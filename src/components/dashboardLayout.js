@@ -12,6 +12,7 @@ import {
   Button,
   Typography,
   Tooltip,
+  CircularProgress,
   useTheme,
 } from "@mui/material";
 import {
@@ -29,6 +30,8 @@ import {
 import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { blue, grey, red } from "@mui/material/colors";
 import chatty_logo from "../assets/rounded-chat.png";
+import { useDispatch, useSelector } from "react-redux";
+import { Authenticate, logOut } from "../features/reducers/authSlice";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -81,17 +84,14 @@ export const DashboardLayout = (props) => {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const token = localStorage.getItem("token");
-  const loginId = localStorage.getItem("loginId");
+  const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
 
   const theme = useTheme();
+  const dispatch = useDispatch();
 
-  //logout user
+  //handle logout
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("loginId");
-    setTimeout(() => window.location.reload(), 500);
+    dispatch(logOut());
   };
 
   const handleDrawerOpen = () => {
@@ -101,6 +101,36 @@ export const DashboardLayout = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    dispatch(Authenticate());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
+        <CircularProgress size={"2rem"} />
+        <Typography
+          variant="caption"
+          sx={{ textAlign: "center", color: grey[600], mt: 2 }}
+        >
+          Please wait...
+        </Typography>
+      </Box>
+    );
+  }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
   const menuItems = [
     {
@@ -137,11 +167,6 @@ export const DashboardLayout = (props) => {
       icon: <SettingsOutlined sx={{ color: "inherit" }} />,
     },
   ];
-
-  if (!token || !loginId) {
-    handleLogout();
-    return <Navigate to="/login" />;
-  }
 
   return (
     <Box sx={{ display: "flex", minWidth: "100%" }}>
