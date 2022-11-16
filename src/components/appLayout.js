@@ -17,6 +17,9 @@ export const AppLayout = (props) => {
   const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  console.log("isLoading: ", isLoading);
+  console.log("isAuthenticated: ", isAuthenticated);
+
   useEffect(() => {
     dispatch(Authenticate());
   }, [dispatch]);

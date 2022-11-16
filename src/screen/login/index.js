@@ -32,6 +32,8 @@ import chat_image from "../../assets/chat.jpg";
 import { grey } from "@mui/material/colors";
 import { useSigninMutation } from "../../features/services/queries";
 import styled from "@emotion/styled";
+import { useDispatch } from "react-redux";
+import { Authenticate } from "../../features/reducers/authSlice";
 
 //create toolbar space equivalent
 const CustomeBox = styled(Box)(({ theme }) => ({
@@ -55,6 +57,7 @@ const LoginScreen = () => {
   //Hooks
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [signin] = useSigninMutation();
 
   const handleClickShowPassword = () => {
@@ -121,6 +124,7 @@ const LoginScreen = () => {
       }
 
       localStorage.setItem("__chatty_token__", data.token);
+      dispatch(Authenticate());
 
       setOpen(true);
       setMessage((prev) => ({
