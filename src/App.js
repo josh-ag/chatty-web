@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 //routes
 import HomeScreen from "./screen/home";
 import SignupScreen from "./screen/signup";
-import ContactScreen from "./screen/contact";
-import AboutScreen from "./screen/about";
 import LoginScreen from "./screen/login";
 import ForgotPasswordScreen from "./screen/forgotPassword";
 import { AppLayout } from "./components/appLayout";
@@ -44,7 +42,6 @@ function App() {
             ? {
                 primary: {
                   main: "#B39CD0",
-                  // main: amber[500],
                 },
                 secondary: {
                   main: "#DBAFFF",
@@ -91,23 +88,8 @@ function App() {
               </AppLayout>
             }
           />
-          <Route
-            path="/contact"
-            element={
-              <AppLayout>
-                <ContactScreen />
-              </AppLayout>
-            }
-          />
+
           <Route path="/chat" element={<ChatScreen />} />
-          <Route
-            path="/about"
-            element={
-              <AppLayout>
-                <AboutScreen />
-              </AppLayout>
-            }
-          />
 
           <Route
             path="/dashboard"

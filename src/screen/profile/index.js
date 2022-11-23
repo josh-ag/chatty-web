@@ -27,6 +27,8 @@ import {
 import header_image from "../../assets/header_image.jpg";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../features/reducers/authSlice";
+import userIcon from "../../assets/user.svg";
+import editIcon from "../../assets/Edit.svg";
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();
@@ -87,7 +89,7 @@ const ProfileScreen = () => {
           }}
           noWrap
         >
-          Something went wrong...
+          {error?.message || error?.error.split(":")[1]}
         </Typography>
       </Box>
     );
@@ -139,9 +141,9 @@ const ProfileScreen = () => {
               border: `2px solid ${deepPurple[400]}`,
               fontSize: 27,
             }}
-          >
-            {data?.user.username.substr(0, 1).toUpperCase()}
-          </Avatar>
+            src={data?.user?.profilePicture?.url || userIcon}
+          />
+
           <Tooltip title="Edit Profile" arrow={true} placement="right-end">
             <IconButton
               sx={(theme) => ({
@@ -155,7 +157,7 @@ const ProfileScreen = () => {
               component={Link}
               to={`/profile/edit/${data.user?._id}`}
             >
-              <Edit sx={{ color: grey[700] }} fontSize="medium" />
+              <Avatar src={editIcon} sx={{ width: 24, height: 24 }} />
             </IconButton>
           </Tooltip>
         </Box>

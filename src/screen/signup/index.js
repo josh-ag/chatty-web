@@ -15,6 +15,11 @@ import {
   Collapse,
   Card,
   CardContent,
+  Avatar,
+  Container,
+  Paper,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import {
@@ -24,17 +29,18 @@ import {
   Person,
   PersonSharp,
   AlternateEmail,
-  LinkedIn,
-  Facebook,
-  Google,
   VpnKey,
   Close,
 } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
-import register_image from "../../assets/register_image.jpg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { useRegisterMutation } from "../../features/services/queries";
+import googleIcon from "../../assets/Google.svg";
+import linkedinIcon from "../../assets/Linkedin.svg";
+import facebookIcon from "../../assets/Facebook.svg";
+import arrowLeft from "../../assets/Caret left.svg";
+import headerImage from "../../assets/header_image.jpg";
 
 //create toolbar space equivalent
 const CustomeBox = styled(Box)(({ theme }) => ({
@@ -114,7 +120,6 @@ const SignupScreen = () => {
       email,
       password,
     };
-    console.log(body);
 
     try {
       const { data, error } = await register(body);
@@ -183,111 +188,124 @@ const SignupScreen = () => {
         </Backdrop>
       )}
 
-      <Grid
-        container
-        sx={{
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          backgroundImage: `url(${loginBanner})`,
-          backgroundAttachment: "fixed",
-          backgroundPosition: "top",
-          backgroundSize: "cover",
-          backgroundRepeat: "none",
-        }}
-      >
-        <Grid
-          item
-          xs={11}
-          sm={10}
-          md={8}
-          p={2}
-          sx={{
+      <Container>
+        <AppBar sx={{ bgcolor: "transparent" }} elevation={0} position="static">
+          <Toolbar sx={{ bgcolor: "transparent" }}>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => navigate(-1)}
+              sx={{
+                textTransform: "capitalize",
+                borderRadius: 20,
+              }}
+            >
+              <Avatar src={arrowLeft} sx={{ width: 24, height: 24 }} />
+              Back
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Paper
+          sx={() => ({
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            alignItem: "stretch",
             justifyContent: "center",
-          }}
+            borderRadius: 0,
+            pl: 2,
+            borderBottomLeftRadius: { sm: 20 },
+            borderTopLeftRadius: { sm: 20 },
+            boxShadow: "0px 1px 2px  #ddd",
+          })}
         >
-          <CustomeBox />
-          <Card
+          <Box
             sx={{
-              // width: { sm: "100%", md: "70%" },
+              flex: 1,
+              p: 2,
               display: "flex",
               flexDirection: "column",
-              borderRadius: theme.spacing(2),
-              opacity: 0.9,
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <CardMedia
-              component="img"
-              image={register_image}
-              alt="login logo"
-              height={250}
-            />
-
-            <CardContent>
-              <Box
+            <Card
+              elevation={0}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                borderRadius: theme.spacing(2),
+                opacity: 0.9,
+              }}
+            >
+              <CardMedia
+                component="img"
+                image={headerImage}
+                alt="login logo"
+                height={200}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "column",
+                  borderRadius: 0,
+                  borderBottomLeftRadius: 100,
+                  display: { xs: "block", sm: "none" },
                 }}
-              >
-                <Typography
-                  variant="h4"
-                  mt={1}
-                  noWrap
+              />
+              <CardContent>
+                <Box
                   sx={{
-                    fontWeight: "medium",
-                    color: grey[800],
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
                   }}
                 >
-                  Register
-                </Typography>
-                <Typography
-                  variant="body1"
-                  mb={4}
-                  noWrap
-                  sx={{
-                    color: grey[800],
-                  }}
-                >
-                  SignUp now
-                </Typography>
-              </Box>
-              {message?.message && (
-                <Collapse in={open} timeout={500}>
-                  <Alert
-                    severity={message?.type}
-                    sx={{ mb: 2, textTransform: "capitalize" }}
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        size="small"
-                        onClick={() => {
-                          setOpen(false);
-                        }}
-                      >
-                        <Close fontSize="inherit" />
-                      </IconButton>
-                    }
+                  <Typography
+                    variant="h4"
+                    mt={1}
+                    noWrap
+                    sx={{
+                      fontWeight: "medium",
+                      color: grey[800],
+                    }}
                   >
-                    {message?.message}
-                  </Alert>
-                </Collapse>
-              )}
-              <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-                onSubmit={handleSubmit}
-              >
-                <Stack direction={"row"} spacing={1}>
+                    Register
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    mb={4}
+                    noWrap
+                    sx={{
+                      color: grey[800],
+                    }}
+                  >
+                    SignUp now
+                  </Typography>
+                </Box>
+                {message?.message && (
+                  <Collapse in={open} timeout={500}>
+                    <Alert
+                      severity={message?.type}
+                      sx={{ mb: 2, textTransform: "capitalize" }}
+                      action={
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          size="small"
+                          onClick={() => {
+                            setOpen(false);
+                          }}
+                        >
+                          <Close fontSize="inherit" />
+                        </IconButton>
+                      }
+                    >
+                      {message?.message}
+                    </Alert>
+                  </Collapse>
+                )}
+                <Box
+                  component="form"
+                  noValidate
+                  autoComplete="off"
+                  onSubmit={handleSubmit}
+                >
                   <TextField
                     error={!firstname && error}
                     variant="outlined"
@@ -333,182 +351,197 @@ const SignupScreen = () => {
                     fullWidth
                     required
                   />
-                </Stack>
 
-                <TextField
-                  error={!username && error}
-                  name="username"
-                  defaultValue={username}
-                  onChange={handleChange}
-                  label="Username"
-                  variant="outlined"
-                  placeholder="Username"
-                  helperText="Username is required*"
-                  sx={{ mb: 2 }}
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton
-                        color={!username && error ? "error" : "default"}
-                      >
-                        <VerifiedUser fontSize="small" />
-                      </IconButton>
-                    ),
-                  }}
-                  fullWidth
-                />
+                  <TextField
+                    error={!username && error}
+                    name="username"
+                    defaultValue={username}
+                    onChange={handleChange}
+                    label="Username"
+                    variant="outlined"
+                    placeholder="Username"
+                    helperText="Username is required*"
+                    sx={{ mb: 2 }}
+                    InputProps={{
+                      startAdornment: (
+                        <IconButton
+                          color={!username && error ? "error" : "default"}
+                        >
+                          <VerifiedUser fontSize="small" />
+                        </IconButton>
+                      ),
+                    }}
+                    fullWidth
+                  />
 
-                <TextField
-                  error={!email && error}
-                  helperText="Email is required*"
-                  defaultValue={email}
-                  onChange={handleChange}
-                  name="email"
-                  variant="outlined"
-                  label="Email"
-                  placeholder="Email"
-                  sx={{ mb: 2 }}
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton color={!email && error ? "error" : "default"}>
-                        <AlternateEmail fontSize="small" />
-                      </IconButton>
-                    ),
-                  }}
-                  fullWidth
-                />
+                  <TextField
+                    error={!email && error}
+                    helperText="Email is required*"
+                    defaultValue={email}
+                    onChange={handleChange}
+                    name="email"
+                    variant="outlined"
+                    label="Email"
+                    placeholder="Email"
+                    sx={{ mb: 2 }}
+                    InputProps={{
+                      startAdornment: (
+                        <IconButton
+                          color={!email && error ? "error" : "default"}
+                        >
+                          <AlternateEmail fontSize="small" />
+                        </IconButton>
+                      ),
+                    }}
+                    fullWidth
+                  />
 
-                <TextField
-                  error={!password && error}
-                  defaultValue={password}
-                  onChange={handleChange}
-                  type={isVisible ? "text" : "password"}
-                  variant="outlined"
-                  name="password"
-                  label="Password"
-                  placeholder="Password"
-                  helperText="Password is required*"
-                  sx={{ mb: 2 }}
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton
-                        color={!password && error ? "error" : "default"}
-                      >
-                        <VpnKey fontSize="small" />
-                      </IconButton>
-                    ),
-                    endAdornment: (
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        edge="end"
-                        color="default"
-                      >
-                        {isVisible ? (
-                          <Visibility fontSize="small" />
-                        ) : (
-                          <VisibilityOff fontSize="small" />
-                        )}
-                      </IconButton>
-                    ),
-                  }}
-                  autoComplete="true"
-                  fullWidth
-                />
+                  <TextField
+                    error={!password && error}
+                    defaultValue={password}
+                    onChange={handleChange}
+                    type={isVisible ? "text" : "password"}
+                    variant="outlined"
+                    name="password"
+                    label="Password"
+                    placeholder="Password"
+                    helperText="Password is required*"
+                    sx={{ mb: 2 }}
+                    InputProps={{
+                      startAdornment: (
+                        <IconButton
+                          color={!password && error ? "error" : "default"}
+                        >
+                          <VpnKey fontSize="small" />
+                        </IconButton>
+                      ),
+                      endAdornment: (
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                          color="default"
+                        >
+                          {isVisible ? (
+                            <Visibility fontSize="small" />
+                          ) : (
+                            <VisibilityOff fontSize="small" />
+                          )}
+                        </IconButton>
+                      ),
+                    }}
+                    autoComplete="true"
+                    fullWidth
+                  />
 
-                <Button type="submit" variant="contained" fullWidth>
-                  register
-                </Button>
-              </Box>
+                  <Button type="submit" variant="contained" fullWidth>
+                    register
+                  </Button>
+                </Box>
 
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  pt: 1,
-                  color: grey[600],
-                }}
-              >
-                By clicking login, you agree to our terms of usage & privacy
-                rules
-              </Typography>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  mt: 4,
-                }}
-              >
-                <Box
-                  sx={{
-                    bgcolor: "transparent",
-                    borderBottom: "1px solid #ccc",
-                    flex: 1,
-                    flexWrap: "wrap",
-                  }}
-                />
                 <Typography
+                  variant="caption"
                   sx={{
-                    flex: 1,
                     textAlign: "center",
+                    pt: 1,
                     color: grey[600],
                   }}
-                  variant="body1"
                 >
-                  Or continue with
+                  By clicking register, you agree to our terms of usage &
+                  privacy rules
                 </Typography>
+
                 <Box
                   sx={{
-                    bgcolor: "transparent",
-                    borderBottom: "1px solid #ccc",
-                    flex: 1,
-                    flexWrap: "wrap",
-                  }}
-                />
-              </Box>
-
-              <Stack
-                direction={"row"}
-                spacing={2}
-                sx={{ alignSelf: "center", mt: 2, justifyContent: "center" }}
-              >
-                <IconButton sx={{ color: theme.palette.warning.main }}>
-                  <Google />
-                </IconButton>
-                <IconButton sx={{ color: theme.palette.primary.main }}>
-                  <Facebook />
-                </IconButton>
-
-                <IconButton sx={{ color: theme.palette.primary.light }}>
-                  <LinkedIn />
-                </IconButton>
-              </Stack>
-              <Stack direction={"row"} sx={{ alignItems: "center", mt: 2 }}>
-                <Typography
-                  sx={{
-                    textTransform: "capitalize",
-                    color: grey[700],
-                    textAlign: "center",
-                  }}
-                  variant="body1"
-                >
-                  Already have an acc?
-                </Typography>
-                <Button
-                  component={RouterLink}
-                  to="/login"
-                  sx={{
-                    textTransform: "capitalize",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mt: 4,
                   }}
                 >
-                  Login
-                </Button>
-              </Stack>
-            </CardContent>
-          </Card>
-          <CustomeBox />
-        </Grid>
-      </Grid>
+                  <Box
+                    sx={{
+                      bgcolor: "transparent",
+                      borderBottom: "1px solid #ccc",
+                      flex: 1,
+                      flexWrap: "wrap",
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      flex: 1,
+                      textAlign: "center",
+                      color: grey[600],
+                    }}
+                    variant="body1"
+                  >
+                    Or continue with
+                  </Typography>
+                  <Box
+                    sx={{
+                      bgcolor: "transparent",
+                      borderBottom: "1px solid #ccc",
+                      flex: 1,
+                      flexWrap: "wrap",
+                    }}
+                  />
+                </Box>
+
+                <Stack
+                  direction={"row"}
+                  spacing={2}
+                  sx={{ alignSelf: "center", mt: 2, justifyContent: "center" }}
+                >
+                  <IconButton sx={{ color: theme.palette.warning.main }}>
+                    <Avatar src={googleIcon} sx={{ width: 30, height: 30 }} />
+                  </IconButton>
+                  <IconButton sx={{ color: theme.palette.primary.main }}>
+                    <Avatar src={facebookIcon} sx={{ width: 30, height: 30 }} />
+                  </IconButton>
+                  <IconButton sx={{ color: theme.palette.primary.light }}>
+                    <Avatar src={linkedinIcon} sx={{ width: 30, height: 30 }} />
+                  </IconButton>
+                </Stack>
+                <Stack direction={"row"} sx={{ alignItems: "center", mt: 2 }}>
+                  <Typography
+                    sx={{
+                      textTransform: "capitalize",
+                      color: grey[700],
+                      textAlign: "center",
+                    }}
+                    variant="body1"
+                  >
+                    Already have an acc?
+                  </Typography>
+                  <Button
+                    component={RouterLink}
+                    to="/login"
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Box>
+
+          <Box
+            sx={{
+              borderBottomLeftRadius: 100,
+              borderTopLeftRadius: 100,
+              flex: { sm: 1, md: 2 },
+              backgroundSize: "cover",
+              backgroundRepeat: "none",
+              backgroundPosition: "center",
+              backgroundImage: `url(${loginBanner})`,
+            }}
+          />
+        </Paper>
+
+        <CustomeBox />
+      </Container>
     </>
   );
 };

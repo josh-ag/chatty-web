@@ -16,7 +16,7 @@ import {
 import { Close } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
 import { grey } from "@mui/material/colors";
-import { useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useVerifyAccountMutation } from "../../features/services/queries";
 
 export const VerifyScreen = () => {
@@ -28,7 +28,7 @@ export const VerifyScreen = () => {
   const [verifyAccount] = useVerifyAccountMutation();
 
   const theme = useTheme();
-  const navigate = useNavigation();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ export const VerifyScreen = () => {
           container
           sx={{ px: 4, justifyContent: "center", alignItems: "center" }}
         >
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={8} md={6}>
             <Paper
               sx={{
                 p: 4,
@@ -134,11 +134,20 @@ export const VerifyScreen = () => {
                   sx={{
                     fontWeight: "medium",
                     color: grey[800],
-                    mb: 4,
                   }}
                   noWrap
                 >
                   Email Verification
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: grey[800],
+                    mb: 2,
+                  }}
+                >
+                  Enter the six digit verification code sent to your email and
+                  click verify button
                 </Typography>
               </Box>
               {message?.message && (
@@ -175,15 +184,15 @@ export const VerifyScreen = () => {
                   type="text"
                   name="verifyCode"
                   label="Verification Code"
-                  placeholder="Enter Verification Code"
+                  placeholder="Enter Six Digit Verification Code"
                   defaultValue={token}
                   sx={{ mb: 1 }}
-                  helperText="Verification is required*"
+                  helperText="Verification code is required*"
                   fullWidth
                 />
 
                 <Button type="submit" variant="contained" fullWidth>
-                  Submit
+                  verify
                 </Button>
               </Box>
             </Paper>

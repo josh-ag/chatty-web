@@ -15,14 +15,12 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Avatar,
 } from "@mui/material";
 import {
   Visibility,
   VisibilityOff,
   AlternateEmail,
-  LinkedIn,
-  Facebook,
-  Google,
   VpnKey,
   Close,
 } from "@mui/icons-material";
@@ -34,6 +32,9 @@ import { useSigninMutation } from "../../features/services/queries";
 import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 import { Authenticate } from "../../features/reducers/authSlice";
+import googleIcon from "../../assets/Google.svg";
+import linkedinIcon from "../../assets/Linkedin.svg";
+import facebookIcon from "../../assets/Facebook.svg";
 
 //create toolbar space equivalent
 const CustomeBox = styled(Box)(({ theme }) => ({
@@ -169,8 +170,8 @@ const LoginScreen = () => {
       >
         <Grid
           item
-          xs={11}
-          sm={10}
+          xs={12}
+          sm={8}
           md={6}
           p={2}
           sx={{
@@ -186,6 +187,9 @@ const LoginScreen = () => {
               flexDirection: "column",
               borderRadius: theme.spacing(2),
               opacity: 0.9,
+              borderRadius: 0,
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
             }}
           >
             <CardMedia
@@ -193,6 +197,7 @@ const LoginScreen = () => {
               image={chat_image}
               alt="login logo"
               height={200}
+              sx={{ borderRadius: 0, borderBottomRightRadius: 100 }}
             />
 
             <CardContent>
@@ -214,7 +219,7 @@ const LoginScreen = () => {
                     color: grey[800],
                   }}
                 >
-                  Login
+                  Welcome back!
                 </Typography>
                 <Typography
                   variant="body1"
@@ -328,6 +333,7 @@ const LoginScreen = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  mt: 2,
                 }}
               >
                 <Button
@@ -404,17 +410,17 @@ const LoginScreen = () => {
 
               <Stack
                 direction={"row"}
-                spacing={2}
+                spacing={1}
                 sx={{ alignSelf: "center", mt: 2, justifyContent: "center" }}
               >
                 <IconButton sx={{ color: theme.palette.warning.main }}>
-                  <Google />
+                  <Avatar src={googleIcon} sx={{ width: 30, height: 30 }} />
                 </IconButton>
                 <IconButton sx={{ color: theme.palette.primary.main }}>
-                  <Facebook />
+                  <Avatar src={facebookIcon} sx={{ width: 30, height: 30 }} />
                 </IconButton>
                 <IconButton sx={{ color: theme.palette.primary.light }}>
-                  <LinkedIn />
+                  <Avatar src={linkedinIcon} sx={{ width: 30, height: 30 }} />
                 </IconButton>
               </Stack>
             </CardContent>

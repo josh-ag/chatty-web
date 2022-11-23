@@ -12,13 +12,17 @@ import {
   Backdrop,
   CircularProgress,
   Collapse,
+  AppBar,
+  Avatar,
+  Toolbar,
+  Container,
 } from "@mui/material";
 import { AlternateEmail, Close } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
-import logoForgotPassword from "../../assets/forgot_passwd.svg";
 import { useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { useResetPasswordMutation } from "../../features/services/queries";
+import arrowLeft from "../../assets/Caret left.svg";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -122,6 +126,7 @@ const ForgotPasswordScreen = () => {
           width: "100%",
           height: "100vh",
           display: "flex",
+          flexDirection: "column",
           backgroundImage: `url(${loginBanner})`,
           backgroundOrigin: "left",
           backgroundPosition: "center",
@@ -129,109 +134,141 @@ const ForgotPasswordScreen = () => {
           backgroundRepeat: "none",
         }}
       >
-        <Grid
-          container
-          sx={{ px: 4, justifyContent: "center", alignItems: "center" }}
+        <Container
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+          }}
         >
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper
-              sx={{
-                p: 4,
-                mt: 6,
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: theme.spacing(2),
-                mb: { sm: 4, xs: 4 },
-                opacity: 0.9,
-              }}
-            >
-              <Box
+          <AppBar
+            sx={{ bgcolor: "transparent" }}
+            elevation={0}
+            position="static"
+          >
+            <Toolbar sx={{ bgcolor: "transparent" }}>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => navigate(-1)}
                 sx={{
+                  textTransform: "capitalize",
+                  borderRadius: 20,
+                }}
+              >
+                <Avatar src={arrowLeft} sx={{ width: 24, height: 24 }} />
+                Back
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <Grid
+            container
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+            }}
+          >
+            <Grid item xs={12} sm={8} md={6}>
+              <Paper
+                sx={{
+                  p: 4,
+                  mt: 6,
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  mb: 2,
+                  borderRadius: theme.spacing(2),
+                  mb: { sm: 4, xs: 4 },
+                  opacity: 0.9,
                 }}
               >
-                <Typography
-                  variant="h5"
+                <Box
                   sx={{
-                    fontWeight: "medium",
-                    color: grey[800],
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mb: 2,
                   }}
-                  noWrap
                 >
-                  Reset Password
-                </Typography>
-              </Box>
-              <Typography
-                variant="body2"
-                sx={{
-                  my: 2,
-                  color: grey[600],
-                }}
-              >
-                We will send to you email containing instructions to reset your
-                password
-              </Typography>
-              <Box
-                component={"form"}
-                noValidate={true}
-                autoComplete="off"
-                onSubmit={handleSubmit}
-              >
-                {message?.message && (
-                  <Collapse in={open} timeout={500}>
-                    <Alert
-                      severity={message.type}
-                      sx={{ mb: 2, textTransform: "capitalize" }}
-                      action={
-                        <IconButton
-                          aria-label="close"
-                          color="inherit"
-                          size="small"
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                        >
-                          <Close fontSize="inherit" />
-                        </IconButton>
-                      }
-                    >
-                      {message.message}
-                    </Alert>
-                  </Collapse>
-                )}
-                <TextField
-                  onChange={(e) => setEmail(e.target.value)}
-                  error={!email && error}
-                  type="email"
-                  label="Email"
-                  placeholder="Email address"
-                  defaultValue={email}
-                  sx={{ mb: 1 }}
-                  helperText="Email is required*"
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton
-                        edge="start"
-                        color={!email && error ? "error" : "default"}
-                      >
-                        <AlternateEmail fontSize="small" />
-                      </IconButton>
-                    ),
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "medium",
+                      color: grey[800],
+                    }}
+                    noWrap
+                  >
+                    Reset Password
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mb: 2,
+                    color: grey[600],
                   }}
-                  fullWidth
-                />
+                >
+                  We will send to you email containing instructions to reset
+                  your password
+                </Typography>
+                <Box
+                  component={"form"}
+                  noValidate={true}
+                  autoComplete="off"
+                  onSubmit={handleSubmit}
+                >
+                  {message?.message && (
+                    <Collapse in={open} timeout={500}>
+                      <Alert
+                        severity={message.type}
+                        sx={{ mb: 2, textTransform: "capitalize" }}
+                        action={
+                          <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                              setOpen(false);
+                            }}
+                          >
+                            <Close fontSize="inherit" />
+                          </IconButton>
+                        }
+                      >
+                        {message.message}
+                      </Alert>
+                    </Collapse>
+                  )}
+                  <TextField
+                    onChange={(e) => setEmail(e.target.value)}
+                    error={!email && error}
+                    type="email"
+                    label="Email"
+                    placeholder="Email address"
+                    defaultValue={email}
+                    sx={{ mb: 1 }}
+                    helperText="Email is required*"
+                    InputProps={{
+                      startAdornment: (
+                        <IconButton
+                          edge="start"
+                          color={!email && error ? "error" : "default"}
+                        >
+                          <AlternateEmail fontSize="small" />
+                        </IconButton>
+                      ),
+                    }}
+                    fullWidth
+                  />
 
-                <Button type="submit" variant="contained" fullWidth>
-                  Send Instruction
-                </Button>
-              </Box>
-            </Paper>
+                  <Button type="submit" variant="contained" fullWidth>
+                    Send Instruction
+                  </Button>
+                </Box>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
+        </Container>
       </Box>
     </>
   );

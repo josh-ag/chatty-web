@@ -19,23 +19,16 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import {
-  MenuOutlined,
-  Close,
-  Search,
-  SearchRounded,
-  DashboardRounded,
-  PermContactCalendarRounded,
-  HomeRounded,
-  HelpRounded,
-  DashboardCustomizeOutlined,
-  VideoCallOutlined,
-  VideoCallRounded,
-} from "@mui/icons-material";
+import { MenuOutlined, SearchRounded } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import chattyLogo from "../assets/rounded-chat.png";
 import { deepPurple, grey } from "@mui/material/colors";
 import { styled } from "@mui/system";
+import lensIcon from "../assets/Search.svg";
+import gridIcon from "../assets/Layout.svg";
+import videoIcon from "../assets/Video.svg";
+import crossIcon from "../assets/Cross.svg";
+import homeIcon from "../assets/homeIcon.svg";
 
 const statusBarHeight = 50;
 
@@ -47,6 +40,7 @@ const SearchButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+//desktop search component
 const SearchPage = ({ setSearch }) => {
   const [query, setQuery] = useState("");
 
@@ -107,6 +101,7 @@ const SearchPage = ({ setSearch }) => {
             elevation={0}
           >
             <IconButton
+              disableRipple
               onClick={() => setSearch(false)}
               sx={(theme) => ({
                 p: "10px",
@@ -114,7 +109,7 @@ const SearchPage = ({ setSearch }) => {
               })}
               aria-label="search-back-button"
             >
-              <Close fontSize="medium" color="inherit" />
+              <Avatar src={crossIcon} sx={{ width: 24, height: 24 }} />
             </IconButton>
             <InputBase
               defaultValue={query}
@@ -134,7 +129,7 @@ const SearchPage = ({ setSearch }) => {
               aria-label="search"
               onClick={handleSubmit}
             >
-              <Search color="inherit" />
+              <Avatar src={lensIcon} sx={{ width: 24, height: 24 }} />
             </IconButton>
           </Paper>
           <Divider orientation="horizontal" sx={{ width: "100%" }} />
@@ -149,8 +144,9 @@ export default function Navbar() {
   //navbar state
   const [active, setActive] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+
   //Drawer State
-  const [state, setState] = useState({
+  const [drawPosition, setDrawPosition] = useState({
     top: false,
     left: false,
     bottom: false,
@@ -175,21 +171,14 @@ export default function Navbar() {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setDrawPosition({ ...drawPosition, [anchor]: open });
   };
 
   //drawerListItems
   const drawerListItems = [
-    { path: "/", name: "Home", icon: <HomeRounded /> },
-    { path: "/about", name: "About", icon: <HelpRounded /> },
-    {
-      path: "/contact",
-      name: "Contact",
-      icon: <PermContactCalendarRounded />,
-    },
-
-    { path: "/", name: "Chat", icon: <VideoCallRounded /> },
-    { path: "/dashboard", name: "Dashboard", icon: <DashboardRounded /> },
+    { path: "/", name: "Home", icon: homeIcon },
+    { path: "/chat", name: "Chat", icon: videoIcon },
+    { path: "/dashboard", name: "Dashboard", icon: gridIcon },
   ];
 
   //drawer items
@@ -215,10 +204,13 @@ export default function Navbar() {
               color: grey[700],
               ":active": {
                 color: "inherit",
+                alignSelf: "center",
               },
             }}
           >
-            <ListItemIcon>{item?.icon}</ListItemIcon>
+            <ListItemIcon>
+              <Avatar src={item.icon} sx={{ width: 30, height: 30 }} />
+            </ListItemIcon>
             <ListItemText>{item?.name}</ListItemText>
           </ListItem>
         ))}
@@ -279,11 +271,11 @@ export default function Navbar() {
                     md: "none",
                   },
                 }}
-                color={active ? "inherit" : "success"}
+                color={active ? "inherit" : "secondary"}
                 size="small"
                 variant="outlined"
               >
-                <MenuOutlined color={active ? "inherit" : "success"} />
+                <MenuOutlined color={active ? "inherit" : "secondary"} />
               </Button>
             </Stack>
 
@@ -299,59 +291,35 @@ export default function Navbar() {
                 },
               }}
             >
-              <Button
-                component={RouterLink}
-                to="/about"
-                sx={{ color: active ? "inherit" : grey[700] }}
-              >
-                About
-              </Button>
-
-              <Button
-                component={RouterLink}
-                to="/contact"
-                sx={{ color: active ? "inherit" : grey[700] }}
-              >
-                Contact
-              </Button>
-
               <>
                 <Button
                   onClick={() => setIsSearch(!isSearch)}
                   sx={{ borderRadius: 4 }}
-                  color={active ? "inherit" : "success"}
+                  color={active ? "inherit" : "secondary"}
                   variant="outlined"
                 >
-                  <SearchRounded
-                    fontSize="medium"
-                    sx={{ color: active ? grey[50] : grey[600] }}
-                  />
+                  <Avatar src={lensIcon} sx={{ width: 24, height: 24 }} />
                 </Button>
                 <Button
                   component={RouterLink}
                   to="/"
                   sx={{ borderRadius: 4 }}
-                  color={active ? "inherit" : "success"}
+                  color={active ? "inherit" : "secondary"}
                   size="small"
                   variant="outlined"
                 >
-                  <VideoCallOutlined
-                    sx={{ color: active ? grey[50] : grey[600] }}
-                    fontSize="small"
-                  />
+                  <Avatar src={videoIcon} sx={{ width: 24, height: 24 }} />
                 </Button>
                 <Button
                   disableRipple
                   sx={{ borderRadius: 4 }}
-                  color={active ? "inherit" : "success"}
+                  color={active ? "inherit" : "secondary"}
                   size="small"
                   variant="outlined"
                   component={RouterLink}
                   to="/dashboard"
                 >
-                  <DashboardCustomizeOutlined
-                    sx={{ color: active ? "#ddd" : grey[700] }}
-                  />
+                  <Avatar src={gridIcon} sx={{ width: 24, height: 24 }} />
                 </Button>
               </>
             </Stack>
@@ -372,7 +340,7 @@ export default function Navbar() {
             },
           }}
           anchor={"top"}
-          open={state["top"]}
+          open={drawPosition["top"]}
           onClose={toggleDrawer("top", false)}
           elevation={0}
         >

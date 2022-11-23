@@ -19,19 +19,17 @@ import {
   ArrowBackIosNewOutlined,
   ArrowForwardIosOutlined,
   CancelOutlined,
-  DashboardOutlined,
-  FavoriteBorderOutlined,
-  LogoutRounded,
-  NotificationsOutlined,
-  PersonOutlined,
-  SettingsOutlined,
-  VideoCallOutlined,
 } from "@mui/icons-material";
 import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { blue, grey, red } from "@mui/material/colors";
 import chatty_logo from "../assets/rounded-chat.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Authenticate, logOut } from "../features/reducers/authSlice";
+import personIcon from "../assets/person.svg";
+import settingsIcon from "../assets/Settings-alt.svg";
+import homeIcon from "../assets/Home.svg";
+import logoutIcon from "../assets/Logout.svg";
+import videoIcon from "../assets/videoChat.svg";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -136,35 +134,25 @@ export const DashboardLayout = (props) => {
     {
       title: "Dashboard",
       path: "/dashboard",
-      icon: <DashboardOutlined sx={{ color: "inherit" }} />,
+      icon: homeIcon,
     },
-    {
-      title: "Chat",
-      path: `/`,
-      icon: <VideoCallOutlined fontSize="medium" sx={{ color: "inherit" }} />,
-    },
+
     {
       title: "Profile",
       path: `/profile/`,
-      icon: <PersonOutlined sx={{ color: "inherit" }} />,
+      icon: personIcon,
     },
+
     {
-      title: "Favorites",
-      path: `/dashboard/favorites`,
-      icon: <FavoriteBorderOutlined sx={{ color: "inherit" }} />,
-    },
-    {
-      title: "Notifications",
-      path: `/dashboard/notifications`,
-      icon: (
-        <NotificationsOutlined fontSize="medium" sx={{ color: "inherit" }} />
-      ),
+      title: "Chats",
+      path: `/chats`,
+      icon: videoIcon,
     },
 
     {
       title: "Settings",
       path: `/dashboard/settings`,
-      icon: <SettingsOutlined sx={{ color: "inherit" }} />,
+      icon: settingsIcon,
     },
   ];
 
@@ -176,19 +164,12 @@ export const DashboardLayout = (props) => {
           <List>
             <ListItem component={Link} to="/" sx={{ justifyContent: "center" }}>
               <Avatar src={chatty_logo} sx={{ width: 50, height: 50, mr: 1 }} />
-              <Typography variant="h5" sx={{ fontSize: 26, color: grey[800] }}>
+              <Typography variant="h5" sx={{ color: grey[800] }}>
                 Chatty
               </Typography>
             </ListItem>
             {open ? (
-              <ListItem>
-                <Button
-                  startIcon={<ArrowBackIosNewOutlined />}
-                  onClick={() => navigate(-1)}
-                  disableRipple
-                >
-                  back
-                </Button>
+              <ListItem sx={{ justifyContent: "center" }}>
                 <Button
                   color="warning"
                   onClick={handleDrawerClose}
@@ -199,7 +180,7 @@ export const DashboardLayout = (props) => {
               </ListItem>
             ) : (
               <ListItem onClick={handleDrawerOpen}>
-                <Tooltip title="Expand">
+                <Tooltip title="Expand" placement="right-start">
                   <ListItemIcon>
                     <ArrowForwardIosOutlined color="primary" />
                   </ListItemIcon>
@@ -235,7 +216,17 @@ export const DashboardLayout = (props) => {
                       : grey[500],
                 }}
               >
-                {item.icon}
+                <Avatar
+                  src={item.icon}
+                  sx={{
+                    width: 30,
+                    height: 30,
+                    color:
+                      location.pathname === item.path
+                        ? theme.palette.primary.main
+                        : grey[500],
+                  }}
+                />
               </ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItem>
@@ -244,7 +235,7 @@ export const DashboardLayout = (props) => {
         <List sx={{ position: "absolute", bottom: 0 }}>
           <ListItem sx={{ color: red[700] }} onClick={handleLogout}>
             <ListItemIcon>
-              <LogoutRounded color="warning" />
+              <Avatar src={logoutIcon} />
             </ListItemIcon>
             <ListItemText primary="Logout" color="warning" />
           </ListItem>

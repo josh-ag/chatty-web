@@ -14,11 +14,12 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Stack,
+  useTheme,
 } from "@mui/material";
-import { blueGrey, yellow } from "@mui/material/colors";
+import { blueGrey } from "@mui/material/colors";
 import { useState } from "react";
 import {
-  AddAPhotoRounded,
   AlternateEmail,
   Close,
   ContactPhoneOutlined,
@@ -27,18 +28,24 @@ import {
   PersonRounded,
   VerifiedUser,
 } from "@mui/icons-material";
-import loginBanner from "../../assets/loginBanner.jpg";
 import { Navigate, useParams } from "react-router-dom";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
+  useUploadProfilePictureMutation,
 } from "../../features/services/queries";
 import header_image from "../../assets/header_image.jpg";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../features/reducers/authSlice";
+import userIcon from "../../assets/user.svg";
+import cameraIcon from "../../assets/Camera.svg";
 
 const EditScreen = () => {
-  //Internal State
+  /*
+=======================================
+    INTERNAL STATE
+=======================================
+  */
   const [updateForm, setUpdateForm] = useState({
     firstname: "",
     lastname: "",
@@ -49,15 +56,17 @@ const EditScreen = () => {
   });
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState({ type: null, message: null });
-
+  const [loading, setLoading] = useState(false);
   const { firstname, lastname, username, country, phone, bios } = updateForm;
   const [profileImage, setProfileImage] = useState(null);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
-  //use Context
+  //USE REDUCER HOOKS
   const { data, isLoading, error } = useGetProfileQuery();
   const [updateProfile] = useUpdateProfileMutation();
+  const [uploadProfilePicture] = useUploadProfilePictureMutation();
 
   //redirect to login if server return unauthorized statusCode
   if (error && error?.originalStatus === 401) {
@@ -72,7 +81,12 @@ const EditScreen = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  /*
+==================================
+      UPDATE USER INFO FUNC
+==================================
+ */
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     //reset state
@@ -107,7 +121,7 @@ const EditScreen = () => {
       },
     };
 
-    const { data: updateResp, error: updateError } = await updateProfile(
+    const { data: updateRes, error: updateError } = await updateProfile(
       updateData
     );
 
@@ -115,18 +129,19 @@ const EditScreen = () => {
       console.log("Update Error: ", updateError);
 
       setOpen(true);
-      return setMessage((prevState) => ({
+      setMessage((prevState) => ({
         ...prevState,
         type: "error",
         message: updateError.message || error.error,
       }));
+      return;
     }
 
     setOpen(true);
     setMessage((prevState) => ({
       ...prevState,
       type: "success",
-      message: updateResp.message,
+      message: updateRes.message,
     }));
 
     //reset internal state
@@ -139,6 +154,78 @@ const EditScreen = () => {
       phone: "",
       bios: "",
     }));
+  };
+
+  //CALLED WHEN USER SELECT NEW PROFILE PICTURE
+  const handleFilechange = (file) => {
+    //reset state
+    setOpen(false);
+    setMessage((prevState) => ({
+      ...prevState,
+      type: null,
+      message: null,
+    }));
+
+    const mimeType = /^image\/jpg|image\/jpeg|image\/png$/;
+
+    if (!mimeType.test(file.type)) {
+      setOpen(true);
+      setMessage((prevState) => ({
+        ...prevState,
+        type: "error",
+        message: "File must be of type jpg|jpeg|png",
+      }));
+      return;
+    }
+
+    setProfileImage(file);
+  };
+
+  //HANDLE UPLOADING FILE
+  const handleProfileUpload = () => {
+    //reset state
+    setLoading(true);
+    setOpen(false);
+    setMessage((prevState) => ({
+      ...prevState,
+      type: null,
+      message: null,
+    }));
+
+    if (!profileImage) return;
+
+    const FR = new FileReader();
+    let baseString;
+    FR.onloadend = async () => {
+      baseString = FR.result;
+      const avatar = { uploads: FR.result };
+      const { data, error } = await uploadProfilePicture(avatar);
+      if (error) {
+        setProfileImage(null);
+        setLoading(false);
+        console.log("Upload Error: ", error);
+        setOpen(true);
+        setMessage((prevState) => ({
+          ...prevState,
+          type: "error",
+          message: error?.message || error?.error.split(":")[1],
+        }));
+        return;
+      }
+
+      setLoading(false);
+      setOpen(true);
+      setMessage((prevState) => ({
+        ...prevState,
+        type: "success",
+        message: data?.message,
+      }));
+      setProfileImage(null);
+      window.location.reload();
+    };
+
+    FR.readAsDataURL(profileImage);
+    setProfileImage("");
   };
 
   if (isLoading) {
@@ -162,107 +249,127 @@ const EditScreen = () => {
   }
 
   return (
-    <Box
-      component="form"
-      autoComplete="off"
-      noValidate={true}
-      onSubmit={handleSubmit}
+    <Card
+      elevation={0}
       sx={{
-        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
-      <Card
-        elevation={0}
+      <CardMedia
+        image={header_image}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          width: "100%",
+          height: 300,
         }}
+      />
+
+      <Paper
+        sx={{
+          width: { xs: "95%", sm: "80%", md: "70%", lg: "60%" },
+          marginTop: -12,
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#B39CD0",
+        }}
+        elevation={0}
       >
-        <CardMedia
-          image={header_image}
-          sx={{
-            width: "100%",
-            height: 300,
-          }}
+        <Avatar
+          src={data?.user?.profilePicture?.url || userIcon}
+          sx={{ width: 150, height: 150 }}
         />
 
-        <Paper
+        <Stack
+          direction={"column"}
           sx={{
-            width: { xs: "95%", sm: "80%", md: "70%", lg: "60%" },
-            marginTop: -12,
-            p: 2,
-            display: "flex",
+            alignSelf: "flex-end",
             alignItems: "center",
-            justifyContent: "center",
-            background: "#B39CD0",
+            width: "auto",
+            overflow: "hidden",
           }}
-          elevation={0}
+          spacing={1}
         >
-          {profileImage ? (
-            <Avatar
-              src={loginBanner.toString()}
-              sx={{ width: 150, height: 150 }}
+          <InputLabel htmlFor="Profile">
+            <Tooltip title="Select new profile" placement="right" arrow>
+              <Avatar
+                src={cameraIcon}
+                sx={{ bgcolor: "#FFC75F", width: 27, height: 27 }}
+              />
+            </Tooltip>
+          </InputLabel>
+          <TextField
+            name="profile"
+            id="Profile"
+            type="file"
+            onChange={(e) => handleFilechange(e.target.files[0])}
+            sx={{ display: "none" }}
+          />
+
+          {loading && (
+            <CircularProgress
+              sx={{ color: theme.palette.primary.light }}
+              size={20}
             />
-          ) : (
-            <Avatar
-              sx={{
-                width: 150,
-                height: 150,
-                bgcolor: "#9B89B3",
-                color: yellow[400],
-                fontSize: 27,
-              }}
+          )}
+
+          {profileImage && (
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              size="small"
+              sx={{ textTransform: "capitalize" }}
+              onClick={handleProfileUpload}
             >
-              {data?.user.username.substr(0, 1).toUpperCase()}
-            </Avatar>
+              save
+            </Button>
           )}
-          <Box sx={{ ml: 1, alignSelf: "flex-end" }}>
-            <InputLabel htmlFor="Profile">
-              <Tooltip title="Select new profile" placement="right" arrow>
-                <AddAPhotoRounded sx={{ color: "#FFC75F" }} />
-              </Tooltip>
-            </InputLabel>
-            <TextField
-              name="profile"
-              id="Profile"
-              type="file"
-              onChange={(e) => setProfileImage(e.target.files[0])}
-              sx={{ display: "none" }}
-            />
-          </Box>
-        </Paper>
-        <CardContent
+        </Stack>
+      </Paper>
+      <CardContent
+        sx={{
+          mt: 4,
+          width: { xs: "95%", sm: "80%", md: "70%", lg: "60%" },
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          px: 6,
+        }}
+      >
+        {message?.message && (
+          <Collapse in={open} timeout={500}>
+            <Alert
+              severity={message?.type}
+              sx={{ mb: 2, textTransform: "capitalize" }}
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                >
+                  <Close fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              {message?.message}
+            </Alert>
+          </Collapse>
+        )}
+        <Box
+          component="form"
+          autoComplete="off"
+          noValidate={true}
+          onSubmit={handleUpdate}
           sx={{
-            mt: 4,
-            width: { xs: "95%", sm: "80%", md: "70%", lg: "60%" },
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
+            width: "100%",
           }}
         >
-          {message?.message && (
-            <Collapse in={open} timeout={500}>
-              <Alert
-                severity={message?.type}
-                sx={{ mb: 2, textTransform: "capitalize" }}
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setOpen(false);
-                    }}
-                  >
-                    <Close fontSize="inherit" />
-                  </IconButton>
-                }
-              >
-                {message?.message}
-              </Alert>
-            </Collapse>
-          )}
           <TextField
             name="firstname"
             placeholder="Firstname"
@@ -362,9 +469,9 @@ const EditScreen = () => {
           >
             update
           </Button>
-        </CardContent>
-      </Card>
-    </Box>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 

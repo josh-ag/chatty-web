@@ -1,24 +1,41 @@
-import { Typography, Box, Button, Stack, Grid, Container } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Button,
+  Stack,
+  Grid,
+  Container,
+  CircularProgress,
+  Fade,
+  Card,
+  CardMedia,
+  CardContent,
+  useTheme,
+} from "@mui/material";
 import showcase from "../../assets/showcase.jpg";
 import accessibility from "../../assets/accessibility.jpg";
 import futuristic from "../../assets/futuristic.jpg";
 import secure from "../../assets/secure.svg";
-
-import { Link as RouterLink } from "react-router-dom";
+import { useGetProfileQuery } from "../../features/services/queries";
+import { logOut } from "../../features/reducers/authSlice";
+import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import styled from "@emotion/styled";
-
-const Image = styled("img")(({ theme }) => ({
-  height: 250,
-  width: 250,
-  borderRadius: "50%",
-  [theme.breakpoints.down("sm")]: {
-    width: 200,
-    height: 200,
-  },
-}));
+import { useDispatch } from "react-redux";
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const theme = useTheme();
+
+  const { data, isLoading, error } = useGetProfileQuery();
+
+  if (error && error?.originalStatus === 401) {
+    dispatch(logOut());
+
+    return <Navigate to="/login" />;
+  }
+
   const features = [
     {
       title: "Accessibility",
@@ -55,166 +72,184 @@ const HomeScreen = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          width: "100%",
-          minHeight: { xs: "80vh", sm: "70" },
-          height: "100%",
-          bgcolor: "background.default",
-          px: 4,
-          py: 4,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Grid
-          container
-          spacing={2}
+      {isLoading ? (
+        <Box
           sx={{
-            height: "100%",
+            width: "100vw",
+            height: `calc(100vh - ${theme.mixins.toolbar.minHeight * 3}px)`,
+            display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            flexDirection: "column",
           }}
         >
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={6}>
-            <img
-              src={showcase}
-              alt="hero section banner"
-              style={{ width: "100%", height: "100%" }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={4} xl={4}>
+          <CircularProgress size={"2rem"} />
+          <Typography
+            variant="caption"
+            sx={{ textAlign: "center", color: grey[600], mt: 2 }}
+          >
+            Please wait...
+          </Typography>
+        </Box>
+      ) : (
+        <>
+          <Fade in={true}>
             <Box
-              sx={{
+              sx={({ theme }) => ({
+                width: "100%",
+                minHeight: { xs: "80vh", sm: "70" },
+                height: "100%",
+                bgcolor: "Background.default",
+                px: 4,
+                py: 4,
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "stretch",
-              }}
+              })}
             >
+              <Grid
+                container
+                spacing={2}
+                sx={{
+                  height: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Grid item xs={12} sm={10} md={8} lg={6} xl={6}>
+                  <img
+                    src={showcase}
+                    alt="hero section banner"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={10} md={8} lg={4} xl={4}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "stretch",
+                    }}
+                  >
+                    <Typography
+                      variant="h4"
+                      textAlign={"center"}
+                      sx={{
+                        color: grey[800],
+                        fontWeight: 300,
+                        overflow: "hidden",
+                      }}
+                    >
+                      Build Real Connections
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      textAlign={"center"}
+                      sx={{
+                        color: grey[700],
+                        mt: 2,
+                        overflow: "hidden",
+                        fontWeight: 200,
+                      }}
+                    >
+                      Reliable, Trustworthy And Efficient
+                    </Typography>
+
+                    <Stack direction="row" spacing={2} sx={{ mt: 6 }}>
+                      <Button
+                        component={RouterLink}
+                        to={`/`}
+                        variant="outlined"
+                        sx={{ textTransform: "capitalize" }}
+                      >
+                        Learn More
+                      </Button>
+                      <Button
+                        component={RouterLink}
+                        to={`/get-started`}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          ml: 2,
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        Get Started
+                      </Button>
+                    </Stack>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Fade>
+          <Fade in={true}>
+            <Container sx={{ my: 4 }}>
               <Typography
                 variant="h4"
                 textAlign={"center"}
-                sx={{
-                  color: grey[800],
-                  fontWeight: 300,
-                  overflow: "hidden",
-                }}
+                sx={{ color: grey[800], my: 2 }}
+                noWrap
               >
-                Build Real Connections
+                Features
               </Typography>
-              <Typography
-                variant="h5"
-                textAlign={"center"}
-                sx={{
-                  color: grey[700],
-                  mt: 2,
-                  overflow: "hidden",
-                  fontWeight: 200,
-                }}
-              >
-                Reliable, Trustworthy And Efficient
-              </Typography>
-
-              <Stack direction="row" spacing={2} sx={{ mt: 6 }}>
-                <Button
-                  component={RouterLink}
-                  to={`/`}
-                  variant="outlined"
-                  sx={{ textTransform: "capitalize" }}
-                >
-                  Learn More
-                </Button>
-                <Button
-                  component={RouterLink}
-                  to={`/get-started`}
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    ml: 2,
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Get Started
-                </Button>
-              </Stack>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Container sx={{ my: 4 }}>
-        <Typography
-          variant="h4"
-          textAlign={"center"}
-          sx={{ color: grey[800], my: 2 }}
-          noWrap
-        >
-          Features
-        </Typography>
-
-        {features.map((feature) => (
-          <Box sx={{ width: "100%", py: 4 }} key={feature.title}>
-            <Grid
-              container
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                xl={4}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  py: 4,
-                }}
-              >
-                <Image src={feature.banner} alt={feature.bannerTitle} />
-              </Grid>
-              <Grid item xs={12} sm={8} md={8} xl={4}>
-                <Typography
-                  variant="h4"
-                  textAlign={"center"}
-                  sx={{ color: grey[900], py: 2 }}
-                  noWrap
-                >
-                  {feature.title}
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    px: 4,
-                  }}
-                >
-                  <Typography
-                    textAlign={"justify"}
-                    variant="body1"
-                    sx={{ color: grey[700], fontSize: 18 }}
+              <Box p={2} mt={2}>
+                {features.map((feature) => (
+                  <Card
+                    key={feature.title}
+                    sx={{
+                      mb: 4,
+                      borderRadius: 4,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      boxShadow: "0px 1px 2px  #ddd",
+                    }}
                   >
-                    {feature.body}
-                  </Typography>
-                  <Button
-                    component={RouterLink}
-                    to={feature.path}
-                    sx={{ textTransform: "capitalize", fontSize: 16, mt: 1 }}
-                    variant="outlined"
-                  >
-                    learn more
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-        ))}
-      </Container>
+                    <CardMedia
+                      image={feature.banner}
+                      sx={{ height: 200, width: "100%" }}
+                    />
+
+                    <CardContent
+                      sx={{
+                        p: 2,
+                        mt: 2,
+                        width: "80%",
+                        alignSelf: "center",
+                        minHeight: 200,
+                      }}
+                    >
+                      <Typography
+                        gutterBottom
+                        variant="h4"
+                        sx={{ textAlign: "center" }}
+                      >
+                        {feature.title}
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        sx={{ textAlign: "center", textWrap: "wrap" }}
+                        color="text.secondary"
+                      >
+                        {feature.body}
+                      </Typography>
+
+                      <Button
+                        onClick={() => navigate(`${feature.path}`)}
+                        variant="outlined"
+                        sx={{ mt: 3 }}
+                      >
+                        learn more &rarr;
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Box>
+            </Container>
+          </Fade>
+        </>
+      )}
     </>
   );
 };
