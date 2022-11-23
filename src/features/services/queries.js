@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_BASE_URL = "https://chatty-web-server.herokuapp.com/api";
-const LOCAL_BASE_URL = "http://localhost:5050/api";
 
 export const api = createApi({
   reducerPath: "api",
@@ -54,7 +53,7 @@ export const api = createApi({
         return {
           url: "/user/profile/upload",
           method: "post",
-          credentials: "include",
+          credentials: "same-origin",
           body: newProfilePicture,
         };
       },
