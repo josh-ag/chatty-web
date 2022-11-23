@@ -6,7 +6,7 @@ const LOCAL_BASE_URL = "http://localhost:5050/api";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api",
+    baseUrl: API_BASE_URL,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("__chatty_token__");
 
