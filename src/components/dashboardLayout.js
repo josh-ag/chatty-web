@@ -15,12 +15,8 @@ import {
   CircularProgress,
   useTheme,
 } from "@mui/material";
-import {
-  ArrowBackIosNewOutlined,
-  ArrowForwardIosOutlined,
-  CancelOutlined,
-} from "@mui/icons-material";
-import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
+
+import { Link, useLocation, Navigate } from "react-router-dom";
 import { blue, grey, red } from "@mui/material/colors";
 import chatty_logo from "../assets/rounded-chat.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +26,8 @@ import settingsIcon from "../assets/Settings-alt.svg";
 import homeIcon from "../assets/Home.svg";
 import logoutIcon from "../assets/Logout.svg";
 import videoIcon from "../assets/videoChat.svg";
+import backIcon from "../assets/Caret right.svg";
+import crossIcon from "../assets/Cross.svg";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -169,19 +167,19 @@ export const DashboardLayout = (props) => {
             </ListItem>
             {open ? (
               <ListItem sx={{ justifyContent: "center" }}>
-                <Button
-                  color="warning"
-                  onClick={handleDrawerClose}
-                  startIcon={<CancelOutlined />}
-                >
+                <Button color="warning" onClick={handleDrawerClose}>
+                  <Avatar src={crossIcon} sx={{ width: 24, height: 24 }} />
                   close
                 </Button>
               </ListItem>
             ) : (
-              <ListItem onClick={handleDrawerOpen}>
+              <ListItem
+                onClick={handleDrawerOpen}
+                sx={{ alignSelf: "flex-end" }}
+              >
                 <Tooltip title="Expand" placement="right-start">
                   <ListItemIcon>
-                    <ArrowForwardIosOutlined color="primary" />
+                    <Avatar src={backIcon} />
                   </ListItemIcon>
                 </Tooltip>
                 <ListItemText color="primary">Open</ListItemText>

@@ -11,8 +11,8 @@ const store = configureStore({
     [api.reducerPath]: api.reducer,
   },
   //adding middleware enable caching, polling, invalidation and other useful features of rtkQuery
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(api.middleware),
 });
 
 //enable refetchOnMount & reFetchOnReconnect

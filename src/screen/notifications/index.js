@@ -1,16 +1,38 @@
 import { InfoOutlined } from "@mui/icons-material";
-import { Box, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Avatar,
+  Toolbar,
+  AppBar,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
+import arrowLeft from "../../assets/Caret left.svg";
 
 const NotificationScreen = () => {
+  const navigate = useNavigate();
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <Box>
+      <AppBar sx={{ bgcolor: "transparent" }} elevation={0} position="static">
+        <Toolbar sx={{ bgcolor: "transparent" }}>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => navigate(-1)}
+            sx={{
+              textTransform: "capitalize",
+              borderRadius: 20,
+            }}
+          >
+            <Avatar src={arrowLeft} sx={{ width: 24, height: 24 }} />
+            Back
+          </Button>
+        </Toolbar>
+      </AppBar>
       <Paper
         sx={{
           display: "flex",
@@ -22,7 +44,11 @@ const NotificationScreen = () => {
         elevation={0}
       >
         <InfoOutlined fontSize="large" sx={{ color: grey[500], mb: 2 }} />
-        <Typography variant="body2" sx={{ color: grey[700], fontSize: "16px" }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ textAlign: "center" }}
+        >
           All messages cleared
         </Typography>
       </Paper>

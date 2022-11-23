@@ -19,7 +19,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import { MenuOutlined, SearchRounded } from "@mui/icons-material";
+import { SearchRounded } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import chattyLogo from "../assets/rounded-chat.png";
 import { deepPurple, grey } from "@mui/material/colors";
@@ -29,6 +29,7 @@ import gridIcon from "../assets/Layout.svg";
 import videoIcon from "../assets/Video.svg";
 import crossIcon from "../assets/Cross.svg";
 import homeIcon from "../assets/homeIcon.svg";
+import menuIcon from "../assets/Menu.svg";
 
 const statusBarHeight = 50;
 
@@ -244,41 +245,49 @@ export default function Navbar() {
               alignItems: "center",
             }}
           >
-            <Avatar
-              edge="start"
-              sx={{ width: 45, height: 45 }}
-              src={chattyLogo}
-              alt="chatty navbar logo"
-            />
-            <Typography noWrap component="div" sx={{ flexGrow: 1 }}>
-              <Link
-                component={RouterLink}
-                to="/"
-                color={active ? "inherit" : grey[900]}
-                sx={{ textDecoration: "none", fontSize: 26, fontWeight: 600 }}
-                ml={2}
-              >
-                Chatty
-              </Link>
-            </Typography>
-            <Stack>
+            <Stack direction={"row"} sx={{ flex: 1 }}>
+              <Avatar
+                edge="start"
+                sx={{ width: 45, height: 45 }}
+                src={chattyLogo}
+                alt="chatty navbar logo"
+              />
+              <Typography noWrap component="div" sx={{ flexGrow: 1 }}>
+                <Link
+                  component={RouterLink}
+                  to="/"
+                  color={active ? "inherit" : grey[900]}
+                  sx={{ textDecoration: "none", fontSize: 26, fontWeight: 600 }}
+                  ml={2}
+                >
+                  Chatty
+                </Link>
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                display: {
+                  xs: "block",
+                  sm: "block",
+                  md: "none",
+                  lg: "none",
+                  xl: "none",
+                },
+              }}
+            >
               <Button
                 onClick={toggleDrawer("top", true)}
-                sx={{
-                  borderRadius: 4,
-                  display: {
-                    sm: "block",
-                    md: "none",
-                  },
-                }}
+                sx={{ borderRadius: 4 }}
                 color={active ? "inherit" : "secondary"}
-                size="small"
                 variant="outlined"
               >
-                <MenuOutlined color={active ? "inherit" : "secondary"} />
+                <Avatar src={menuIcon} sx={{ width: 24, height: 24 }} />
               </Button>
             </Stack>
 
+            {/* ONLY VISIBLE @DESKTOP  */}
             <Stack
               direction="row"
               spacing={2}

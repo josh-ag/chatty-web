@@ -59,8 +59,6 @@ function App() {
                 secondary: {
                   main: "#DBAFFF",
                 },
-                // background: { paper: "#52546B", default: "#191B2A" },
-                // text: { primary: "#EDEDEE", secondary: grey[300] },
               }),
         },
         typography: {
