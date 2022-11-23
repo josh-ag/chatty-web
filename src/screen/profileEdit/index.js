@@ -244,8 +244,21 @@ const EditScreen = () => {
     );
   }
 
+  console.log(error);
   if (error) {
-    return <Typography>{error}</Typography>;
+    return (
+      <Box
+        sx={{
+          height: 300,
+          background: blueGrey[50],
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography>{error?.message || error?.error}</Typography>
+      </Box>
+    );
   }
 
   return (

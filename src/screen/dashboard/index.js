@@ -22,7 +22,6 @@ import chatIcon from "../../assets/Chat.svg";
 import userIcon from "../../assets/user.svg";
 
 const DashboardScreen = () => {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

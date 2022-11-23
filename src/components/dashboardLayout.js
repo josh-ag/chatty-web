@@ -80,7 +80,6 @@ const Drawer = styled(MuiDrawer, {
 
 export const DashboardLayout = (props) => {
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
 

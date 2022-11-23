@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_BASE_URL = "https://chatty-web-server.herokuapp.com/api";
+const LOCAL_BASE_URL = "http://localhost:5050/api";
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL,
+    baseUrl: "/api",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("__chatty_token__");
 
@@ -46,7 +47,6 @@ export const api = createApi({
         url: `/user/${data.id}`,
         body: data.body,
         method: "put",
-        credentials: "include",
       }),
     }),
     uploadProfilePicture: builder.mutation({
