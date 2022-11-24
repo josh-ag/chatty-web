@@ -16,7 +16,6 @@ import { useGetProfileQuery } from "../../features/services/queries";
 import { deepPurple, grey, orange } from "@mui/material/colors";
 import {
   AccountCircleOutlined,
-  Edit,
   EditOutlined,
   EmailOutlined,
   MapOutlined,
@@ -33,7 +32,8 @@ import editIcon from "../../assets/Edit.svg";
 const ProfileScreen = () => {
   const dispatch = useDispatch();
 
-  const { data, error, isLoading } = useGetProfileQuery();
+  const loginId = localStorage.getItem("c_id");
+  const { data, error, isLoading } = useGetProfileQuery(loginId);
 
   if (error?.originalStatus === 401 || error?.data === "Unauthorized") {
     dispatch(logOut());

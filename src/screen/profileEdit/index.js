@@ -64,7 +64,8 @@ const EditScreen = () => {
   const theme = useTheme();
 
   //USE REDUCER HOOKS
-  const { data, isLoading, error } = useGetProfileQuery();
+  const loginId = localStorage.getItem("c_id");
+  const { data, isLoading, error } = useGetProfileQuery(loginId);
   const [updateProfile] = useUpdateProfileMutation();
   const [uploadProfilePicture] = useUploadProfilePictureMutation();
 

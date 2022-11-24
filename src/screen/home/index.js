@@ -20,7 +20,6 @@ import { useGetProfileQuery } from "../../features/services/queries";
 import { logOut } from "../../features/reducers/authSlice";
 import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
-import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 
 const HomeScreen = () => {
@@ -28,7 +27,9 @@ const HomeScreen = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const { data, isLoading, error } = useGetProfileQuery();
+  //get user profile
+  const loginId = localStorage.getItem("c_id");
+  const { data, isLoading, error } = useGetProfileQuery(loginId);
 
   if (error && error?.originalStatus === 401) {
     dispatch(logOut());

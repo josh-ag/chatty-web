@@ -125,6 +125,7 @@ const LoginScreen = () => {
       }
 
       localStorage.setItem("__chatty_token__", data.token);
+      localStorage.setItem("c_id", data?.id);
       dispatch(Authenticate());
 
       setOpen(true);

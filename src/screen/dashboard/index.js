@@ -25,7 +25,9 @@ const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data, isLoading, error } = useGetProfileQuery();
+  //get user profile
+  const loginId = localStorage.getItem("c_id");
+  const { data, isLoading, error } = useGetProfileQuery(loginId);
 
   if (error && error?.originalStatus === 401) {
     dispatch(logOut());
