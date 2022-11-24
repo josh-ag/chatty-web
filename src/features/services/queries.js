@@ -5,7 +5,7 @@ const API_BASE_URL = "https://chatty-web-server.herokuapp.com/api";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api",
+    baseUrl: API_BASE_URL,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("__chatty_token__");
 
