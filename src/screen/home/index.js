@@ -29,7 +29,10 @@ const HomeScreen = () => {
 
   //get user profile
   const loginId = localStorage.getItem("c_id");
-  const { data, isLoading, error } = useGetProfileQuery(loginId);
+  const { data, isLoading, error } = useGetProfileQuery(loginId, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
 
   if (error && error?.originalStatus === 401) {
     dispatch(logOut());

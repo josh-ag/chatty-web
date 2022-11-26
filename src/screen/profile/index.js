@@ -33,7 +33,10 @@ const ProfileScreen = () => {
   const dispatch = useDispatch();
 
   const loginId = localStorage.getItem("c_id");
-  const { data, error, isLoading } = useGetProfileQuery(loginId);
+  const { data, error, isLoading } = useGetProfileQuery(loginId, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
 
   if (error?.originalStatus === 401 || error?.data === "Unauthorized") {
     dispatch(logOut());

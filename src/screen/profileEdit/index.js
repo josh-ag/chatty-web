@@ -65,7 +65,10 @@ const EditScreen = () => {
 
   //USE REDUCER HOOKS
   const loginId = localStorage.getItem("c_id");
-  const { data, isLoading, error } = useGetProfileQuery(loginId);
+  const { data, isLoading, error } = useGetProfileQuery(loginId, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
   const [updateProfile] = useUpdateProfileMutation();
   const [uploadProfilePicture] = useUploadProfilePictureMutation();
 
@@ -199,12 +202,13 @@ const EditScreen = () => {
     let baseString;
     FR.onloadend = async () => {
       baseString = FR.result;
-      const avatar = { uploads: FR.result };
+
+      const avatar = { uploads: baseString };
       const { data, error } = await uploadProfilePicture(avatar);
       if (error) {
         setProfileImage(null);
         setLoading(false);
-        console.log("Upload Error: ", error);
+        // console.log("Upload Error: ", error);
         setOpen(true);
         setMessage((prevState) => ({
           ...prevState,
@@ -222,7 +226,6 @@ const EditScreen = () => {
         message: data?.message,
       }));
       setProfileImage(null);
-      window.location.reload();
     };
 
     FR.readAsDataURL(profileImage);
