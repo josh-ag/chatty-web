@@ -158,7 +158,7 @@ const ProfileScreen = () => {
               })}
               size="small"
               component={Link}
-              to={`/profile/edit/${data.user?._id}`}
+              to={`/dashboard/profile/edit/${data.user?._id}`}
             >
               <Avatar src={editIcon} sx={{ width: 24, height: 24 }} />
             </IconButton>

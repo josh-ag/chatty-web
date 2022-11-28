@@ -136,7 +136,7 @@ export const DashboardLayout = (props) => {
 
     {
       title: "Profile",
-      path: `/profile/`,
+      path: `/dashboard/profile`,
       icon: personIcon,
     },
 
@@ -243,6 +243,7 @@ export const DashboardLayout = (props) => {
           width: "100%",
         }}
       >
+        {/* <Outlet /> */}
         {props.children}
       </Box>
     </Box>
