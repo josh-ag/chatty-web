@@ -1,10 +1,12 @@
 import { Typography, Button } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { grey } from "@mui/material/colors";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRouteError } from "react-router-dom";
 
 export const NotFound = () => {
   const navigate = useNavigate();
+
+  const error = useRouteError();
 
   return (
     <div
@@ -35,7 +37,16 @@ export const NotFound = () => {
         }}
         noWrap
       >
-        This page do not exist
+        We Encounter problem while loading the page
+      </Typography>
+
+      <Typography
+        sx={{
+          textAlign: "center",
+          color: grey[800],
+        }}
+      >
+        {error.statusText || error.message}
       </Typography>
 
       <Button

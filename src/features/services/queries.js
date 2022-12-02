@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const API_BASE_URL = "https://chatty-web-server.herokuapp.com/api";
 
 export const api = createApi({
-  reducerPath: "api",
+  reducerPath: API_BASE_URL,
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL,
+    baseUrl: "/api",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("__chatty_token__");
 
@@ -41,6 +41,12 @@ export const api = createApi({
       }),
     }),
 
+    getRoom: builder.query({
+      query: (id) => ({
+        url: `/rooms/${id}`,
+        method: "get",
+      }),
+    }),
     updateProfile: builder.mutation({
       query: (data) => ({
         url: `/user/${data.id}`,
@@ -89,6 +95,7 @@ export const {
   useSigninMutation,
   useRegisterMutation,
   useGetProfileQuery,
+  useGetRoomQuery,
   useUpdateProfileMutation,
   useResetPasswordMutation,
   useVerifyAccountMutation,

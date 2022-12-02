@@ -80,19 +80,38 @@ const ProfileScreen = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          flexDirection: "column",
         }}
       >
         <Typography
-          variant="h5"
+          variant="h4"
+          sx={{
+            color: grey[800],
+            textAlign: "center",
+            mb: 2,
+          }}
+        >
+          Oops!
+        </Typography>
+
+        <Typography
+          variant="title1"
+          sx={{
+            color: grey[600],
+            textAlign: "center",
+          }}
+        >
+          Something went wrong
+        </Typography>
+
+        <Typography
+          variant="body2"
           sx={{
             color: grey[500],
-            fontSize: 16,
             textAlign: "center",
-            mb: 4,
           }}
-          noWrap
         >
-          {error?.message || error?.error.split(":")[1]}
+          {error?.data?.message || error?.message || error?.error.split(":")[1]}
         </Typography>
       </Box>
     );

@@ -227,6 +227,7 @@ const HomeScreen = () => {
                         gutterBottom
                         variant="h4"
                         sx={{ textAlign: "center" }}
+                        noWrap
                       >
                         {feature.title}
                       </Typography>

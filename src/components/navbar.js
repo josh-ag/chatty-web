@@ -311,7 +311,7 @@ export default function Navbar() {
                 </Button>
                 <Button
                   component={RouterLink}
-                  to="/"
+                  to="/chat"
                   sx={{ borderRadius: 4 }}
                   color={active ? "inherit" : "secondary"}
                   size="small"

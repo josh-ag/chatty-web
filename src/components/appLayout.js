@@ -8,6 +8,7 @@ import { Authenticate } from "../features/reducers/authSlice";
 import { Navigate } from "react-router-dom";
 import { CircularProgress, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { CssBaseline } from "@mui/material";
 
 const CustomeBox = styled(Box)(({ theme }) => ({
   height: theme.mixins.toolbar.minHeight,
@@ -47,6 +48,7 @@ export const AppLayout = (props) => {
   if (isAuthenticated) {
     return (
       <div>
+        <CssBaseline />
         {/* appbar */}
         <Navbar />
 

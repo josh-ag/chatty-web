@@ -17,7 +17,7 @@ import {
   Stack,
   useTheme,
 } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
+import { blueGrey, grey } from "@mui/material/colors";
 import { useState } from "react";
 import {
   AlternateEmail,
@@ -248,7 +248,6 @@ const EditScreen = () => {
     );
   }
 
-  console.log(error);
   if (error) {
     return (
       <Box
@@ -256,11 +255,41 @@ const EditScreen = () => {
           height: 300,
           background: blueGrey[50],
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Typography>{error?.message || error?.error}</Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            color: grey[800],
+            textAlign: "center",
+            mb: 2,
+          }}
+        >
+          Oops!
+        </Typography>
+
+        <Typography
+          variant="title1"
+          sx={{
+            color: grey[600],
+            textAlign: "center",
+          }}
+        >
+          Something went wrong
+        </Typography>
+
+        <Typography
+          variant="body2"
+          sx={{
+            color: grey[500],
+            textAlign: "center",
+          }}
+        >
+          {error?.data?.message || error?.message || error?.error.split(":")[1]}
+        </Typography>
       </Box>
     );
   }

@@ -1,18 +1,15 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { blue, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import {
   AppBar,
   Avatar,
-  Backdrop,
   Box,
-  CircularProgress,
   Grid,
   IconButton,
   Paper,
   Stack,
   Toolbar,
-  useTheme,
 } from "@mui/material";
 import { useGetProfileQuery } from "../../features/services/queries";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -47,11 +44,6 @@ const DashboardScreen = () => {
       >
         <Toolbar>
           <Box sx={{ flex: 1, justifyContent: "flex-start" }}>
-            {error && (
-              <Typography variant="headline1" sx={{ color: "error.main" }}>
-                {error?.message || error?.error.split(":")[1]}
-              </Typography>
-            )}
             {data?.user && (
               <Typography variant="h4" sx={{ color: grey[600] }} noWrap>
                 Welcome Back, {data?.user.username}!
@@ -62,7 +54,7 @@ const DashboardScreen = () => {
             <IconButton
               disableRipple
               color="primary"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/dashboard/profile")}
             >
               <Avatar
                 src={data?.user?.profilePicture?.url || userIcon}

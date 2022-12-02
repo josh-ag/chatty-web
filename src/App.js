@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./route";
-//routes
 
 import {
   createTheme,
@@ -9,7 +8,6 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 
-import { CssBaseline } from "@mui/material";
 import { useSelector } from "react-redux";
 import { grey } from "@mui/material/colors";
 
@@ -58,7 +56,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme={true} />
       <RouterProvider router={router} />
     </ThemeProvider>
   );

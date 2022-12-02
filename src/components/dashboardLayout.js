@@ -142,7 +142,7 @@ export const DashboardLayout = (props) => {
 
     {
       title: "Chats",
-      path: `/chats`,
+      path: `/chat`,
       icon: videoIcon,
     },
 

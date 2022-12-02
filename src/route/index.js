@@ -3,6 +3,7 @@ import { AppLayout } from "../components/appLayout";
 import { DashboardLayout } from "../components/dashboardLayout";
 import { NotFound } from "../components/notFound";
 import ChatScreen from "../screen/chat";
+import { RoomScreen } from "../screen/chat/room";
 import DashboardScreen from "../screen/dashboard";
 import ForgotPasswordScreen from "../screen/forgotPassword";
 import HomeScreen from "../screen/home";
@@ -27,8 +28,12 @@ export const router = createBrowserRouter([
     errorElement: <NotFound />,
   },
   {
-    path: "chat",
+    path: "room/:userId/:roomId",
     element: <ChatScreen />,
+  },
+  {
+    path: "chat",
+    element: <RoomScreen />,
   },
   {
     path: "dashboard",
