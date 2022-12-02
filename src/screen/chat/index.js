@@ -49,10 +49,10 @@ const ChatScreen = () => {
   const [message, setMessage] = useState("");
   const [roomMessage, setRoomMessage] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const { roomId, userId } = useParams();
   const [newUser, setNewUser] = useState(null);
   const [activeUsers, setActiveUsers] = useState(null);
   const [typing, setTyping] = useState("");
+  const { roomId, userId } = useParams();
 
   //@GET ROOM INFO
   const { data: roomData, error: roomError } = useGetRoomQuery(roomId, {
@@ -104,7 +104,7 @@ const ChatScreen = () => {
     socket.on("is-typing", (data) => {
       setTyping(data);
     });
-  }, [setTyping]);
+  });
 
   useEffect(() => {
     //MESSAGE LISTENER
@@ -152,7 +152,7 @@ const ChatScreen = () => {
 
   //clear typing state
   if (!!typing) {
-    setTimeout(() => setTyping(null), 800);
+    setTimeout(() => setTyping(null), 600);
   }
 
   const LogNewJoinUser = ({ user }) => {

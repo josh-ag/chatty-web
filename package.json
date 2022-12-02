@@ -2,7 +2,7 @@
   "name": "chatty",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://d132-105-112-70-109.eu.ngrok.io",
+  "proxy": "https://chatty-server-xy3z.onrender.com/",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",

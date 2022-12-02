@@ -17,5 +17,4 @@ const store = configureStore({
 
 //enable refetchOnMount & reFetchOnReconnect
 setupListeners(store.dispatch);
-
 export default store;
