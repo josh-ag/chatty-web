@@ -73,7 +73,7 @@ export const RoomScreen = () => {
       setError("RoomID is Required!");
       return;
     }
-
+    console.log("Joining...");
     socket.emit("find-room", { roomId, userId: loginId });
   };
 
@@ -124,6 +124,7 @@ export const RoomScreen = () => {
 
   useEffect(() => {
     socket.on("room-not-found", (data) => {
+      console.log(data);
       setLoading(false);
       setJoinError(data?.message);
     });
@@ -235,6 +236,7 @@ export const RoomScreen = () => {
               onChange={(e) => setRoomId(e.target.value)}
             />
             <Button
+              disabled={loading ? true : false}
               type="submit"
               variant={loading ? "outlined" : "contained"}
               fullWidth
@@ -346,6 +348,7 @@ export const RoomScreen = () => {
               }
             />
             <Button
+              disabled={loading ? true : false}
               type="submit"
               variant={loading ? "outlined" : "contained"}
               fullWidth

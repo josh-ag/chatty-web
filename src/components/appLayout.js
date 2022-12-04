@@ -43,9 +43,7 @@ export const AppLayout = (props) => {
         </Typography>
       </Box>
     );
-  }
-
-  if (isAuthenticated) {
+  } else if (isAuthenticated) {
     return (
       <div>
         <CssBaseline />
