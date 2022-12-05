@@ -142,7 +142,7 @@ const ChatScreen = () => {
   }
 
   //redirect if room not found
-  console.log(roomError);
+
   if (
     roomError?.data?.statusCode === 404 ||
     roomError?.data?.message === "Room Not Found"
@@ -152,7 +152,10 @@ const ChatScreen = () => {
 
   //clear typing state
   if (!!typing) {
-    setTimeout(() => setTyping(null), 600);
+    setTimeout(() => setTyping(null), 500);
+  }
+  if (newUser) {
+    setTimeout(() => setNewUser(null), 10000);
   }
 
   const LogNewJoinUser = ({ user }) => {

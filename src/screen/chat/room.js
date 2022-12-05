@@ -73,7 +73,7 @@ export const RoomScreen = () => {
       setError("RoomID is Required!");
       return;
     }
-    console.log("Joining...");
+
     socket.emit("find-room", { roomId, userId: loginId });
   };
 
@@ -114,23 +114,21 @@ export const RoomScreen = () => {
 
   */
   const toggleJoinDrawer = (anchor, open) => () => {
-    setState({ ...state, [anchor]: open });
     setLoading(false);
+    setState({ ...state, [anchor]: open });
   };
   const toggleCreateRoomDrawer = (anchor, open) => () => {
-    setDrawPosition({ ...drawerPosition, [anchor]: open });
     setLoading(false);
+    setDrawPosition({ ...drawerPosition, [anchor]: open });
   };
 
   useEffect(() => {
     socket.on("room-not-found", (data) => {
-      console.log(data);
       setLoading(false);
       setJoinError(data?.message);
     });
 
     socket.on("room-found", (_) => {
-      console.log("room was found");
       navigate(`/room/${loginId}/${roomId}`);
     });
 

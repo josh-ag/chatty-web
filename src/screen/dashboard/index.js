@@ -84,7 +84,7 @@ const DashboardScreen = () => {
             }}
           >
             <Typography gutterBottom variant="h5" sx={{ color: grey[600] }}>
-              Usage History
+              Usage Analytics
             </Typography>
             <Typography color="text.secondary" variant="body2">
               Upon use, usage data will appear here
