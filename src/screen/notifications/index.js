@@ -11,6 +11,7 @@ import {
 import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import arrowLeft from "../../assets/Caret left.svg";
+import crossIcon from "../../assets/Cross.svg";
 
 const NotificationScreen = () => {
   const navigate = useNavigate();
@@ -28,8 +29,7 @@ const NotificationScreen = () => {
               borderRadius: 20,
             }}
           >
-            <Avatar src={arrowLeft} sx={{ width: 24, height: 24 }} />
-            Back
+            <Avatar src={crossIcon} sx={{ width: 24, height: 24 }} />
           </Button>
         </Toolbar>
       </AppBar>
