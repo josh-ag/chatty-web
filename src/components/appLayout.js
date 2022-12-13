@@ -5,7 +5,7 @@ import FooterComponent from "./footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Authenticate } from "../features/reducers/authSlice";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { CircularProgress, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
@@ -51,14 +51,12 @@ export const AppLayout = (props) => {
         <Navbar />
 
         {/* pages */}
-        <div>
-          <CustomeBox />
-          {props.children}
-        </div>
+
+        <CustomeBox />
+        <Outlet />
+
         <FooterComponent />
       </div>
     );
-  } else {
-    return <Navigate to={"/login"} />;
   }
 };

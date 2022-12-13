@@ -21,7 +21,7 @@ function App() {
           ...(mode === "light"
             ? {
                 primary: {
-                  main: "#B39CD0",
+                  main: "#4D4A95",
                 },
                 secondary: {
                   main: "#DBAFFF",

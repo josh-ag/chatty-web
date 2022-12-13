@@ -17,7 +17,7 @@ import { grey } from "@mui/material/colors";
 import arrowLeft from "../../assets/Cross.svg";
 import { Close } from "@mui/icons-material";
 import { Layout } from "./layout";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { useGetProfileQuery } from "../../features/services/queries";
 import { logOut } from "../../features/reducers/authSlice";
 import { useDispatch } from "react-redux";
@@ -129,6 +129,7 @@ export const RoomScreen = () => {
     });
 
     socket.on("room-found", (_) => {
+      // redirect(`room/${loginId}/${roomId}`);
       navigate(`/room/${loginId}/${roomId}`);
     });
 

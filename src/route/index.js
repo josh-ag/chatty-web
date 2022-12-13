@@ -20,32 +20,32 @@ import { VerifyScreen } from "../screen/verify/verifyScreen";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <AppLayout>
-        <HomeScreen />
-      </AppLayout>
-    ),
+    element: <AppLayout />,
     errorElement: <NotFound />,
+    children: [
+      { element: <HomeScreen />, index: true },
+      { path: "success", element: <SuccessConfirmation /> },
+    ],
   },
+  { path: "chat", element: <RoomScreen /> },
   {
     path: "room/:userId/:roomId",
     element: <ChatScreen />,
   },
-  {
-    path: "chat",
-    element: <RoomScreen />,
-  },
+
   {
     path: "dashboard",
-    element: (
-      <DashboardLayout>
-        <DashboardScreen />
-      </DashboardLayout>
-    ),
-  },
-  {
-    path: "success",
-    element: <SuccessConfirmation />,
+    element: <DashboardLayout />,
+    children: [
+      {
+        element: <DashboardScreen />,
+        index: true,
+      },
+      { path: "notifications", element: <NotificationScreen /> },
+      { path: "settings", element: <SettingsScreen /> },
+      { path: "profile", element: <ProfileScreen /> },
+      { path: "profile/edit/:id", element: <EditScreen /> },
+    ],
   },
   {
     path: "login",
@@ -54,41 +54,6 @@ export const router = createBrowserRouter([
   {
     path: "signup",
     element: <SignupScreen />,
-  },
-  {
-    path: "dashboard/profile",
-    element: (
-      <DashboardLayout>
-        <ProfileScreen />
-      </DashboardLayout>
-    ),
-  },
-
-  {
-    path: "dashboard/profile/edit/:id",
-    element: (
-      <DashboardLayout>
-        <EditScreen />
-      </DashboardLayout>
-    ),
-  },
-
-  {
-    path: "/dashboard/notifications",
-    element: (
-      <DashboardLayout>
-        <NotificationScreen />
-      </DashboardLayout>
-    ),
-  },
-
-  {
-    path: "dashboard/settings",
-    element: (
-      <DashboardLayout>
-        <SettingsScreen />
-      </DashboardLayout>
-    ),
   },
   { path: "/password/forgot", element: <ForgotPasswordScreen /> },
   { path: "/password/new", element: <NewPassword /> },

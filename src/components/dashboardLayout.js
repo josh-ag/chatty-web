@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 
-import { Link, useLocation, Navigate } from "react-router-dom";
+import { Link, useLocation, Navigate, Outlet } from "react-router-dom";
 import { blue, grey, red } from "@mui/material/colors";
 import chatty_logo from "../assets/rounded-chat.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -243,8 +243,7 @@ export const DashboardLayout = (props) => {
           width: "100%",
         }}
       >
-        {/* <Outlet /> */}
-        {props.children}
+        <Outlet />
       </Box>
     </Box>
   );

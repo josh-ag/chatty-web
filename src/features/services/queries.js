@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const API_BASE_URL = "https://chatty-backend-production.up.railway.app";
+export const API_BASE_URL = "https://chatty-server-xy3z.onrender.com";
 
 export const api = createApi({
   reducerPath: "api",

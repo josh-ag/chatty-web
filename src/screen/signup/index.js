@@ -33,7 +33,7 @@ import {
   Close,
 } from "@mui/icons-material";
 import loginBanner from "../../assets/loginBanner.jpg";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, redirect, useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { useRegisterMutation } from "../../features/services/queries";
 import googleIcon from "../../assets/Google.svg";
@@ -147,6 +147,7 @@ const SignupScreen = () => {
       }));
 
       setTimeout(() => {
+        // redirect("/login");
         navigate("/login");
       }, 2000);
 
