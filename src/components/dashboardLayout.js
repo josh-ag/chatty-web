@@ -123,6 +123,7 @@ export const DashboardLayout = (props) => {
       </Box>
     );
   }
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }

@@ -43,7 +43,9 @@ export const AppLayout = (props) => {
         </Typography>
       </Box>
     );
-  } else if (isAuthenticated) {
+  } else if (!isAuthenticated) {
+    return <Navigate to={"login"} />;
+  } else {
     return (
       <div>
         <CssBaseline />
@@ -51,7 +53,6 @@ export const AppLayout = (props) => {
         <Navbar />
 
         {/* pages */}
-
         <CustomeBox />
         <Outlet />
 

@@ -5,7 +5,7 @@ export const API_BASE_URL = "https://chatty-server-xy3z.onrender.com";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL + "/api",
+    baseUrl: "/api",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("__chatty_token__");
 
