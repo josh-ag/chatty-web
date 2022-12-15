@@ -14,10 +14,15 @@ import {
   Typography,
   Collapse,
   Alert,
+  Drawer,
+  ListItem,
+  List,
+  ListItemText,
+  MenuItem,
 } from "@mui/material";
-import chatIcon from "../../assets/Chat.svg";
+import crossIcon from "../../assets/Cross.svg";
 import userIcon from "../../assets/user.svg";
-import arrowLeft from "../../assets/Caret left.svg";
+import notificationIcon from "../../assets/Notification.svg";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Close, Send } from "@mui/icons-material";
 import { blueGrey, grey, purple } from "@mui/material/colors";
@@ -45,6 +50,12 @@ const ModalContainer = styled(Paper)(({ theme }) => ({
   p: 4,
 }));
 
+const CustomeBox = styled(Box)(({ theme }) => ({
+  height: theme.mixins.toolbar.minHeight + 5,
+}));
+
+const drawerWidth = 300;
+
 const ChatScreen = () => {
   const [message, setMessage] = useState("");
   const [roomMessage, setRoomMessage] = useState([]);
@@ -53,6 +64,14 @@ const ChatScreen = () => {
   const [activeUsers, setActiveUsers] = useState(null);
   const [typing, setTyping] = useState("");
   const { roomId, userId } = useParams();
+
+  //Drawer state
+  const [drawerPosition, setDrawerPosition] = useState({
+    left: false,
+    right: true,
+    top: false,
+    bottom: false,
+  });
 
   //@GET ROOM INFO
   const { data: roomData, error: roomError } = useGetRoomQuery(roomId, {
@@ -74,6 +93,7 @@ const ChatScreen = () => {
 
     socket.emit("typing", { username: data?.user.username, roomId });
   };
+
   //HANDLE SENDING MESSAGE
   const handleSend = () => {
     if (!message) return;
@@ -89,15 +109,15 @@ const ChatScreen = () => {
 
   //@EMIT JOIN
   useEffect(() => {
-    socket.emit("join", { roomId, userId });
-  }, [roomId, userId]);
+    socket.emit("join", { roomId, userId, username: data?.user.username });
+  }, []);
 
   //GET ALL USER IN THE ROOM
   useEffect(() => {
     socket.on("all-users", (data) => {
       setActiveUsers(data);
     });
-  }, [setActiveUsers]);
+  }, []);
 
   //TYPING LISTENER
   useEffect(() => {
@@ -120,6 +140,18 @@ const ChatScreen = () => {
     });
   });
 
+  useEffect(() => {
+    //LISTEN FOR NEW USER JOIN
+    socket.on("leave", (data) => {});
+  });
+
+  const toggleDrawer = (anchor, open) => () => {
+    setDrawerPosition({
+      ...drawerPosition,
+      [anchor]: open,
+    });
+  };
+
   const ModalComponent = () => (
     <Modal
       open={modalOpen}
@@ -129,7 +161,7 @@ const ChatScreen = () => {
     >
       <ModalContainer>
         <Typography variant="body1" sx={{ color: grey[600] }}>
-          All message clear
+          All Notification clear
         </Typography>
       </ModalContainer>
     </Modal>
@@ -142,12 +174,11 @@ const ChatScreen = () => {
   }
 
   //redirect if room not found
-
   if (
     roomError?.data?.statusCode === 404 ||
     roomError?.data?.message === "Room Not Found"
   ) {
-    return <Navigate to="/chat" />;
+    return <Navigate to="/login" />;
   }
 
   //clear typing state
@@ -188,52 +219,75 @@ const ChatScreen = () => {
         sx={{
           overflow: "hidden",
           height: "100vh",
-          width: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          width: { sm: "100%", lg: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <AppBar
           position="static"
           elevation={0}
-          sx={{ bgcolor: "background.default" }}
+          sx={{
+            bgcolor: "background.default",
+
+            width: { sm: "100%", lg: `calc(100vw - ${drawerWidth}px)` },
+          }}
         >
           <Container>
-            <Toolbar>
-              <Box sx={{ flex: 1, display: "flex", alignItems: "center" }}>
+            <Toolbar sx={{ justifyContent: "space-between" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Button
                   size="small"
                   variant="outlined"
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/chat")}
                   mr={1}
+                  color="warning"
                   sx={{
                     textTransform: "capitalize",
                     borderRadius: 20,
                   }}
                 >
-                  <Avatar src={arrowLeft} sx={{ width: 24, height: 24 }} />
-                  Home
+                  leave
                 </Button>
-
-                {roomData?.name && (
-                  <Typography
-                    variant="h5"
-                    color="text.secondary"
-                    sx={{ textAlign: "center", flex: 1 }}
-                    noWrap
-                  >
-                    #{roomData?.name.toUpperCase()}
-                  </Typography>
-                )}
               </Box>
 
-              <Stack direction={"row"} spacing={1}>
+              {roomData?.name && (
+                <Typography
+                  variant="h4"
+                  sx={{
+                    textAlign: "center",
+                    background:
+                      "linear-gradient(90deg, rgba(132,94,194,1) 0%, rgba(155,137,179,1) 46%, rgba(33,137,167,1) 99%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                  noWrap
+                >
+                  #{roomData?.name.toUpperCase()}
+                </Typography>
+              )}
+
+              <Stack
+                direction={"row"}
+                spacing={1}
+                sx={{ alignItems: "center" }}
+              >
                 <Avatar
-                  src={chatIcon}
+                  src={notificationIcon}
                   onClick={() => setModalOpen(!modalOpen)}
+                  sx={{ width: "1.5rem", height: "1.5rem" }}
                 />
-                <Avatar src={data?.user?.profilePicture?.url || userIcon} />
+                <Avatar
+                  src={data?.user?.profilePicture?.url || userIcon}
+                  sx={{ width: "2rem", height: "2rem" }}
+                />
               </Stack>
             </Toolbar>
           </Container>
@@ -299,8 +353,9 @@ const ChatScreen = () => {
                       <Alert
                         key={i}
                         icon={false}
-                        severity="info"
                         sx={{
+                          background:
+                            "linear-gradient(90deg, rgba(214,239,250,0.6530987394957983) 0%, rgba(252,247,255,1) 17%, rgba(252,247,255,1) 100%);",
                           mb: 1,
                           borderRadius: 20,
                           borderTopLeftRadius:
@@ -327,20 +382,25 @@ const ChatScreen = () => {
                         ) : (
                           <Stack
                             direction={"row"}
-                            sx={{ alignItems: "center" }}
+                            sx={{ alignItems: "center", flexWrap: "wrap" }}
                           >
                             <Typography
                               variant="button"
                               sx={{
                                 mr: 2,
-                                borderRadius: 2,
-                                padding: 1,
-                                border: `.5px solid ${purple[100]}`,
+                                background:
+                                  "linear-gradient(105deg, rgba(0,158,250,1) 44%, rgba(0,210,252,1) 91%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
                               }}
                             >
                               {message.username}
                             </Typography>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography
+                              variant="body1"
+                              color="text.secondary"
+                              sx={{ textAlign: "center" }}
+                            >
                               {message.message}
                             </Typography>
                           </Stack>
@@ -372,7 +432,7 @@ const ChatScreen = () => {
             <TextField
               multiline
               name="message"
-              maxRows={2}
+              rows={1}
               type="text"
               placeholder="Write Message"
               value={message}
@@ -380,7 +440,12 @@ const ChatScreen = () => {
               sx={{ flex: 1, fontFamily: "outfit", fontWeight: "200" }}
             />
             <IconButton
-              sx={{ bgcolor: message ? purple[400] : grey[500], ml: 1 }}
+              sx={{
+                background: message
+                  ? "linear-gradient(105deg, rgba(0,158,250,1) 44%, rgba(79,251,223,1) 91%)"
+                  : grey[500],
+                ml: 1,
+              }}
               disableRipple
               onClick={handleSend}
             >
@@ -389,6 +454,64 @@ const ChatScreen = () => {
           </Paper>
         </Container>
       </Box>
+
+      <Drawer
+        anchor="right"
+        open={drawerPosition["right"]}
+        onClose={() => toggleDrawer("right", false)}
+        variant="permanent"
+        sx={{
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
+          display: {
+            xs: "none",
+            sm: "none",
+            lg: "block",
+          },
+        }}
+      >
+        <Box sx={{ width: "100%", height: "100%" }}>
+          <Box
+            sx={(theme) => ({
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: theme.mixins.toolbar.minHeight,
+            })}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                background:
+                  "linear-gradient(90deg, rgba(132,94,194,1) 0%, rgba(155,137,179,1) 46%, rgba(33,137,167,1) 99%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Active Users
+            </Typography>
+          </Box>
+          <List>
+            {activeUsers?.length
+              ? activeUsers.map((user) => (
+                  <MenuItem
+                    key={user.userId}
+                    color="text.secondary"
+                    sx={{
+                      justifyContent: "center",
+                      fontSize: 20,
+                      color: grey[600],
+                    }}
+                  >
+                    {user.username}
+                  </MenuItem>
+                ))
+              : null}
+          </List>
+        </Box>
+      </Drawer>
     </>
   );
 };

@@ -26,15 +26,13 @@ export const Layout = (props) => {
         sx={{ background: "transparent" }}
         elevation={0}
       >
-        <Container>
-          <Toolbar>
-            <Avatar src={chattyLogo} />
-          </Toolbar>
-        </Container>
+        <Toolbar sx={{ justifyContent: "center" }}>
+          <Avatar src={chattyLogo} />
+        </Toolbar>
       </AppBar>
       <Container>
         <Typography
-          variant="h5"
+          variant="h4"
           color="text.secondary"
           sx={{ textAlign: "center", mt: 2 }}
           noWrap

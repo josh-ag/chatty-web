@@ -199,7 +199,6 @@ export default function Navbar() {
             key={item.name}
             component={RouterLink}
             to={item.path}
-            button
             sx={{
               textDecoration: "none",
               color: grey[700],
@@ -339,7 +338,6 @@ export default function Navbar() {
         <Drawer
           sx={{
             width: "100%",
-
             display: {
               xs: "block",
               sm: "block",
