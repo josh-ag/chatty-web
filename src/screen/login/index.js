@@ -188,19 +188,8 @@ const LoginScreen = () => {
               flexDirection: "column",
               borderRadius: theme.spacing(2),
               opacity: 0.9,
-              borderRadius: 0,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
             }}
           >
-            <CardMedia
-              component="img"
-              image={chat_image}
-              alt="login logo"
-              height={200}
-              sx={{ borderRadius: 0, borderBottomRightRadius: 100 }}
-            />
-
             <CardContent>
               <Box
                 sx={{
